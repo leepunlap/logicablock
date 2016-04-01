@@ -1,0 +1,14 @@
+.row.fullheight
+  .col-xs-3.fullinnerheight
+    .panel.panel-logica.fullinnerheight
+      .panel-heading
+        | Toolbox
+      .panel-body.canvas#lbtoolbox
+        = react_component 'LBToolbox', {}, {prerender: false, class: 'lbtoolbox'}
+
+  .col-xs-9.fullinnerheight
+    .panel.panel-logica.fullinnerheight
+      .panel-heading
+        | Canvas
+      .panel-body.canvas#lbcanvas
+        = react_component 'LBCanvas', {}, {prerender: false, class: 'lbcanvas'}
