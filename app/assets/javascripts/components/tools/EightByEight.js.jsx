@@ -13,6 +13,7 @@ var EightByEight = React.createClass({
       [0,0,0,0,0,0,0,8],
       ]};
   },
+
   render: function() {
     var id=0;
     var ledCol = function(col) {
@@ -31,6 +32,7 @@ var EightByEight = React.createClass({
       <LBComponent toolName="8x8 Display" objid={this.props.objid} isInToolbox={this.props.isInToolbox}>
         <div className="lb-ledarray">
           {this.state.leds.map(ledRow)}
+          <LBDropTarget id={this.props.objid}></LBDropTarget>
         </div>
       </LBComponent>
     );

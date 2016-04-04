@@ -64,11 +64,15 @@ var LBCanvas = React.createClass({
       if (Math.abs(vy) < 10 && Math.abs(vx) < 10) {
         this.selectTool(e.objid,e.className);
       }
-    } else  if (e.action === 'moveexistingtool') {
+    } else if (e.action === 'moveexistingtool') {
       var tool = this.findToolByObjectId(e.objid)
       tool.x = e.x-this.state.rx-pos.left+canvas.scrollLeft();
       tool.y = e.y-this.state.ry-pos.top+canvas.scrollTop();
       this.setState({items:this.state.items, x:tool.x, y:tool.y})
+    } else if (e.action === 'dragstart') {
+      this.setState({dragstartid:e.objid})
+    } else if (e.action === 'drop') {
+      console.log('drop ' + this.state.dragstartid + " to " +  e.objid)
     }
   },
   componentDidMount: function() {

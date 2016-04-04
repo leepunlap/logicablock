@@ -48,8 +48,14 @@ var LBSubComponent = React.createClass({
   onMouseDown: function(e) {
     var node = ReactDOM.findDOMNode(this);
     var pos = $(node).offset();
-    var x = Math.floor(e.touches[0].pageX);
-    var y = Math.floor(e.touches[0].pageY);
+    var x,y;
+    if (typeof(e.touches) !== 'undefined') {
+      x = Math.floor(e.touches[0].pageX);
+      y = Math.floor(e.touches[0].pageY);
+    } else {
+      x = Math.floor(e.clientX);
+      y = Math.floor(e.clientY); 
+    }
     this.setState({dragging: true});
     //
     //  If in toobox, create new copy by sending message to canvas
@@ -98,8 +104,14 @@ var LBSubComponent = React.createClass({
   onMouseMove: function(e) {
     var node = ReactDOM.findDOMNode(this);
     var pos = $(node).offset();
-    var x = Math.floor(e.touches[0].pageX);
-    var y = Math.floor(e.touches[0].pageY);
+    var x,y;
+    if (typeof(e.touches) !== 'undefined') {
+      x = Math.floor(e.touches[0].pageX);
+      y = Math.floor(e.touches[0].pageY);
+    } else {
+      x = Math.floor(e.clientX);
+      y = Math.floor(e.clientY); 
+    }
     //
     //  If in toobox, move new copy by sending message to canvas
     //
@@ -127,7 +139,6 @@ var LBSubComponent = React.createClass({
     if (this.props.isEditing) {
       return (
         <div className={classes}>
-          <p>HAHAHA</p>
           {this.props.children}
         </div>
       );

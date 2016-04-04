@@ -37,6 +37,8 @@ var LBToolbox = React.createClass({
         var toolscontrol = <Face isEditing={true} objid={this.state.objid} />
       } else if (this.state.editclassname == 'lb-face2') {
         var toolscontrol = <Face2 isEditing={true} objid={this.state.objid} />
+      } else if (this.state.editclassname == 'lb-controller') {
+        var toolscontrol = <Controller isEditing={true} objid={this.state.objid} />
       } else {
         var toolscontrol = <p>Coming Soon</p>
       }
@@ -44,7 +46,7 @@ var LBToolbox = React.createClass({
       var tools = (
         <div>
           <h2>{this.state.editclassname}</h2>
-            {toolscontrol}
+          {toolscontrol}
         </div>
       )
     } else {
