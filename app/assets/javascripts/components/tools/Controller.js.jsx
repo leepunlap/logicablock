@@ -50,9 +50,7 @@ var Controller = React.createClass({
     };
     var inputConnectorProps = function(i) {
       return(
-        <div key={i.n} className="lb-draggable" draggable="true" onDragStart={that.onDragStart} id={objid+"|input|"+i.n}>
-          <div>{i.n}</div>
-        </div>
+        <LBDragSource key={i.n} id={objid+"|input|"+i.n}>fff</LBDragSource>
       );
     };
     var outputConnectorProps = function(i) {

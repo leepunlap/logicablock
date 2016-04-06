@@ -52,13 +52,11 @@ var LBToolbox = React.createClass({
     } else {
       var tools = (
         <div>
-          <FlowStart isInToolbox={true} />
           <EightByEight isInToolbox={true} />
+          <Controller isInToolbox={true} />
           <Face isInToolbox={true} />
           <Face2 isInToolbox={true} />
-          <Controller isInToolbox={true} />
           <Wheels isInToolbox={true} />
-          <FlowEnd isInToolbox={true} />
           
           <button className="btn btn-success" onClick={this.onClear}>Clear</button>
           <button className="btn btn-success" onClick={this.onLoad}>Load</button>
