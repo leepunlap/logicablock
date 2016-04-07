@@ -1,11 +1,10 @@
 /* global AppDispatcher, React, ReactDOM */
 
+
+
 var LBCanvas = React.createClass({
   getInitialState: function() {
     return {tooldragging:false,items:[]};
-  },
-  deviceOrientationChanged: function(e) {
-    this.setState({alpha: e.alpha});
   },
   findToolByObjectId: function(objid) {
     for (var i in this.state.items) {
@@ -70,9 +69,27 @@ var LBCanvas = React.createClass({
       tool.y = e.y-this.state.ry-pos.top+canvas.scrollTop();
       this.setState({items:this.state.items, x:tool.x, y:tool.y})
     } else if (e.action === 'dragstart') {
-      this.setState({dragstartid:e.objid})
+      var toks = e.objid.split('|');
+      this.setState({dragstartoid:toks[0], dragstarttype:toks[1], dragstartid:toks[2]})
     } else if (e.action === 'drop') {
-      console.log('drop ' + this.state.dragstartid + " to " +  e.objid)
+      var startobj = this.findToolByObjectId(this.state.dragstartoid);
+      if (typeof(startobj[this.state.dragstarttype]) == 'undefined') {
+        startobj[this.state.dragstarttype] = []
+      }
+      var m = _.find(startobj[this.state.dragstarttype], { 'n': this.state.dragstartid, 'objid': e.objid })
+      if (typeof(m) == 'undefined') {
+        startobj[this.state.dragstarttype].push({ 'n': this.state.dragstartid, 'objid': e.objid })
+        this.setState({items: this.state.items})
+      }
+    } else if (e.action === 'deletetool') {
+      for (var i in this.state.items) {
+        if (this.state.items[i].uuid === e.objid) {
+          this.state.items.splice(i,1);
+          this.setState({items:this.state.items})
+        }
+      }
+    } else if (e.action === 'unselecttool') {
+      this.setState({selectedTool:null})
     }
   },
   componentDidMount: function() {
@@ -99,7 +116,6 @@ var LBCanvas = React.createClass({
     }
   },
   render: function() {
-    
     //
     //  Highlight canvas on drag entry
     //
@@ -124,7 +140,6 @@ var LBCanvas = React.createClass({
     if (x > 0 && y > 0) {
       overlayStyle.backgroundColor = 'rgba(128,255,128,0.4)'
     }
-
     //
     //  Display item being dragged from toolbox
     //
@@ -165,14 +180,79 @@ var LBCanvas = React.createClass({
         placedToolStyle.border = '1px solid blue'
       }
       return (
-        <div style={placedToolStyle} key={i.uuid}>
+        <div id={i.uuid} style={placedToolStyle} key={i.uuid}>
           {elem}
         </div>
       )
     }.bind(this);
+
+    var closestConnectorStyle = function(x,y,srcobjid,dx,dy,destobjid) {
+      var destobj = $('#'+destobjid)[0];
+      var dw = destobj.clientWidth;
+      var dh = destobj.clientHeight;
+      return {
+        srcStyle: {
+          position:'absolute',
+          border: '1px solid red',
+          top: y,
+          left: x,
+          marginTop:-5,
+          marginLeft:-5,
+          width:10,
+          height:10,
+          borderRadius:5
+        },
+        destStyle: {
+          position:'absolute',
+          border: '1px solid red',
+          top: dy + dh,
+          left: dx + dw / 2,
+          marginTop:-5,
+          marginLeft:-5,
+          width:10,
+          height:10,
+          borderRadius:5
+        }
+      }
+
+
+    };
+
+    var createConnection = function(lbobject) {
+      var drawLine = function(l) {
+        var dest = this.findToolByObjectId(l.objid);
+        var closestConn = closestConnectorStyle(lbobject.x,lbobject.y,lbobject.uuid,dest.x,dest.y,l.objid);
+
+        var lineStyle = createNavLine(closestConn.srcStyle.left,closestConn.srcStyle.top,closestConn.destStyle.left,closestConn.destStyle.top)
+        return (
+          <div key={l.n+"-"+l.objid}>
+            <div style={lineStyle}>
+              {l.n}
+            </div>
+            <div style={closestConn.srcStyle} />
+            <div style={closestConn.destStyle} />
+          </div>
+        )
+      }.bind(this)
+      if (typeof(lbobject.input) !== 'undefined') {
+        var inputs =  lbobject.input.map(drawLine)
+      }
+      if (typeof(lbobject.output) !== 'undefined') {
+        var outputs = lbobject.output.map(drawLine)
+      }
+      return (
+        <div key={'line-'+lbobject.uuid}>
+          {inputs}
+          {outputs}
+        </div>
+      )
+    }.bind(this)
+
     var createdItems = (<div>{this.state.items.map(createItem)}</div>)
+    var createdConnections = (<div>{this.state.items.map(createConnection)}</div>)
     return (
       <div style={canvasStyle}>
+        {createdConnections}
         {createdItems}
         {loaderElem}
         {draggingElem}

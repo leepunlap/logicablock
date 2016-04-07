@@ -5,13 +5,13 @@ var LBDropTarget = React.createClass({
     return {};
   },
   dragOver: function(e){
-     e.preventDefault();e.stopPropagation();
-     return false;
-  },
-  dragEnter: function(e){
-    e.preventDefault();e.stopPropagation();
-    this.setState({overed:true});
-    return false;
+    if (_.indexOf(this.props.accepts, this.state.dragstarttype) >= 0) {
+      this.setState({overed:true,allowed:true});
+      e.preventDefault();e.stopPropagation();
+      return false;
+    } else {
+      this.setState({overed:true,allowed:false});
+    }
   },
   dragLeave: function(e){
     e.preventDefault();e.stopPropagation();
@@ -26,6 +26,18 @@ var LBDropTarget = React.createClass({
       objid:e.target.id
     })
   },
+  handleEvents: function(e) {
+    if (e.action === 'dragstart') {
+      var toks = e.objid.split('|');
+      this.setState({dragstartoid:toks[0], dragstarttype:toks[1], dragstartid:toks[2]})
+    }
+  },
+  componentDidMount: function() {
+    this.token = AppDispatcher.register(this.handleEvents);
+  },
+  componentWillUnmount: function() {
+    AppDispatcher.unregister(this.token)
+  },
   render: function() {
     var dropTarget = {
       position:'absolute',
@@ -36,10 +48,15 @@ var LBDropTarget = React.createClass({
       textAlign:'center'
     }
     if (this.state.overed) {
-      dropTarget.border='2px solid green'
+      if (this.state.allowed) {
+        dropTarget.border='2px solid green'
+      } else {
+        dropTarget.border='2px solid red'
+      }
+
     }
     return (
-      <div style={dropTarget} id={this.props.id} onDrop={this.onDrop} onDragOver={this.dragOver} onDragEnter={this.dragEnter} onDragLeave={this.dragLeave}></div>
+      <div style={dropTarget} id={this.props.id} onDrop={this.onDrop} onDragOver={this.dragOver} onDragEnter={this.dragOver} onDragLeave={this.dragLeave}></div>
     );
   }
 })

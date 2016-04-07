@@ -81,6 +81,7 @@ var Face = React.createClass({
       <LBComponent toolName="Face" objid={this.props.objid} isInToolbox={this.props.isInToolbox} isEditing={this.props.isEditing}>
         <div className={className}>
           {this.state.leds.map(ledRow)}
+          <LBDropTarget id={this.props.objid} accepts={["input"]}></LBDropTarget>
           {propPage}
         </div>
       </LBComponent>

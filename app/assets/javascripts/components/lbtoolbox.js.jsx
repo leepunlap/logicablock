@@ -21,7 +21,7 @@ var LBToolbox = React.createClass({
   handleEvents: function(e) {
     if (e.action === 'selecttool') {
       this.setState({objid: e.objid, editclassname:e.className})
-    } else if (e.action === 'unselecttool') {
+    } else if (e.action === 'unselecttool' || e.action === 'deletetool') {
       this.setState({objid: null, editclassname:null})
     }
   },
@@ -31,6 +31,18 @@ var LBToolbox = React.createClass({
   componentWillUnmount: function() {
     AppDispatcher.unregister(this.token)
   },
+  onDelete: function(e){
+    AppDispatcher.dispatch({
+      action:'deletetool',
+      objid:this.state.objid
+    })
+  },
+  onClose: function(e){
+    AppDispatcher.dispatch({
+      action:'unselecttool',
+      objid:this.state.objid
+    })
+  },
   render: function() {
     if (this.state.objid) {
       if (this.state.editclassname == 'lb-face') {
@@ -39,14 +51,17 @@ var LBToolbox = React.createClass({
         var toolscontrol = <Face2 isEditing={true} objid={this.state.objid} />
       } else if (this.state.editclassname == 'lb-controller') {
         var toolscontrol = <Controller isEditing={true} objid={this.state.objid} />
+      } else if (this.state.editclassname == 'lb-ledarray') {
+        var toolscontrol = <EightByEight isEditing={true} objid={this.state.objid} />
       } else {
         var toolscontrol = <p>Coming Soon</p>
       }
-      
       var tools = (
         <div>
           <h2>{this.state.editclassname}</h2>
           {toolscontrol}
+          <button className="btn btn-danger" onClick={this.onDelete}>Delete</button>
+          <button className="btn btn-success" onClick={this.onClose}>Close</button>
         </div>
       )
     } else {

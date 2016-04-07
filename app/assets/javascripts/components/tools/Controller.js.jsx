@@ -16,13 +16,6 @@ var Controller = React.createClass({
       ]
     };
   },
-  onDragStart: function(e){
-    e.dataTransfer.setData("text/html", e.target.id)
-    AppDispatcher.dispatch({
-      action:'dragstart',
-      objid:e.target.id
-    })
-  },
   render: function() {
     var that = this;
     var objid = this.props.objid;
@@ -50,18 +43,15 @@ var Controller = React.createClass({
     };
     var inputConnectorProps = function(i) {
       return(
-        <LBDragSource key={i.n} id={objid+"|input|"+i.n}>fff</LBDragSource>
+        <LBDragSource key={i.n} name={i.n} id={objid+"|input|"+i.n}></LBDragSource>
       );
     };
     var outputConnectorProps = function(i) {
       return(
-        <div key={i.n} className="lb-draggable" draggable="true" onDragStart={that.onDragStart} id={objid+"|output|"+i.n}>
-          <div>{i.n}</div>
-        </div>
+        <LBDragSource key={i.n} name={i.n} id={objid+"|output|"+i.n}></LBDragSource>
       );
     };
     if(this.props.isEditing) {
-      var className="lb-face-edit";
       var propPage = (
         <div>
           <h4>Inputs</h4>

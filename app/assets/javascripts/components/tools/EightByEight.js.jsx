@@ -11,7 +11,7 @@ var EightByEight = React.createClass({
       [0,0,0,0,0,6,0,0],
       [0,0,0,0,0,0,7,0],
       [0,0,0,0,0,0,0,8],
-      ]};
+    ]};
   },
 
   render: function() {
@@ -24,15 +24,15 @@ var EightByEight = React.createClass({
     var ledRow = function(row) {
       return(
         <div className="lb-ledrow" key={id++}>
-        {row.map(ledCol)}
+          {row.map(ledCol)}
         </div>
       );
     }
     return (
-      <LBComponent toolName="8x8 Display" objid={this.props.objid} isInToolbox={this.props.isInToolbox}>
+      <LBComponent toolName="8x8 Display" objid={this.props.objid} isInToolbox={this.props.isInToolbox} isEditing={this.props.isEditing}>
         <div className="lb-ledarray">
           {this.state.leds.map(ledRow)}
-          <LBDropTarget id={this.props.objid}></LBDropTarget>
+          <LBDropTarget id={this.props.objid} accepts={["output"]}></LBDropTarget>
         </div>
       </LBComponent>
     );

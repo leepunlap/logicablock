@@ -114,6 +114,7 @@ body {
  */
  
 .lb {
+  position:relative;
   text-align:center;
   font-size:24px;
   background-color:white;
@@ -122,26 +123,25 @@ body {
  
 .lb-ledarray {
   @extend .lb;
-  position:relative;
-  zoom:75%;
+  zoom:100%;
   font-size:0px;
-  width:200px;
+  width:162px;
   background-color:white;
   padding:2px;
   border:solid 1px #888;
 }
 
 .lb-ledrow {
-  line-height:normal;  
+  line-height:normal;
 }
 
 .lb-led {
   background-color:#ccc;
-  height:20px;
-  width:20px;
+  height:15px;
+  width:15px;
   margin:2px;
   border:solid 1px #888;
-  border-radius:10px;
+  border-radius:7px;
   display:inline-block;
   box-shadow:1px 1px 1px #aaa;
 }
@@ -168,9 +168,8 @@ body {
 
 .lb-face, .lb-face2{
   @extend .lb;
-  zoom:50%;
   font-size:0px;
-  width:200px;
+  width:162px;
   background-color:rgba(255,255,255,0.8);
   padding:2px;
   border:solid 1px #ddd;

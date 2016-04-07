@@ -13,7 +13,7 @@ var LBDragSource = React.createClass({
   },
   render: function() {
     return (
-      <div key={this.props.n} className="lb-draggable" draggable="true" onDragStart={this.onDragStart} id={this.props.id}>{this.props.n}</div>
+      <div className="lb-draggable" draggable="true" onDragStart={this.onDragStart} id={this.props.id}>{this.props.name}</div>
     );
   }
 })
