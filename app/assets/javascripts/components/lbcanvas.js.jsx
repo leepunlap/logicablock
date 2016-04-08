@@ -111,8 +111,6 @@ var LBCanvas = React.createClass({
       return (<Wheels className={className} objid={i} x={x} y={y} />)
     } else if (className == 'lb-face') {
       return (<Face className={className} objid={i} x={x} y={y} />)
-    } else if (className == 'lb-face2') {
-      return (<Face2 className={className} objid={i} x={x} y={y} />)
     }
   },
   render: function() {
@@ -185,38 +183,6 @@ var LBCanvas = React.createClass({
         </div>
       )
     }.bind(this);
-
-    var closestConnectorStyle = function(x,y,srcobjid,dx,dy,destobjid) {
-      var destobj = $('#'+destobjid)[0];
-      var dw = destobj.clientWidth;
-      var dh = destobj.clientHeight;
-      return {
-        srcStyle: {
-          position:'absolute',
-          border: '1px solid red',
-          top: y,
-          left: x,
-          marginTop:-5,
-          marginLeft:-5,
-          width:10,
-          height:10,
-          borderRadius:5
-        },
-        destStyle: {
-          position:'absolute',
-          border: '1px solid red',
-          top: dy + dh,
-          left: dx + dw / 2,
-          marginTop:-5,
-          marginLeft:-5,
-          width:10,
-          height:10,
-          borderRadius:5
-        }
-      }
-
-
-    };
 
     var createConnection = function(lbobject) {
       var drawLine = function(l) {

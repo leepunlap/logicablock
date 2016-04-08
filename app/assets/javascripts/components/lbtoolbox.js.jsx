@@ -47,8 +47,6 @@ var LBToolbox = React.createClass({
     if (this.state.objid) {
       if (this.state.editclassname == 'lb-face') {
         var toolscontrol = <Face isEditing={true} objid={this.state.objid} />
-      } else if (this.state.editclassname == 'lb-face2') {
-        var toolscontrol = <Face2 isEditing={true} objid={this.state.objid} />
       } else if (this.state.editclassname == 'lb-controller') {
         var toolscontrol = <Controller isEditing={true} objid={this.state.objid} />
       } else if (this.state.editclassname == 'lb-ledarray') {
@@ -70,7 +68,6 @@ var LBToolbox = React.createClass({
           <EightByEight isInToolbox={true} />
           <Controller isInToolbox={true} />
           <Face isInToolbox={true} />
-          <Face2 isInToolbox={true} />
           <Wheels isInToolbox={true} />
           
           <button className="btn btn-success" onClick={this.onClear}>Clear</button>
