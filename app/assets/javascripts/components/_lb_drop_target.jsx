@@ -27,9 +27,40 @@ var LBDropTarget = React.createClass({
     })
   },
   handleEvents: function(e) {
+    var pos = $('#lbcanvas').offset();
+    var canvas = $('#lbcanvas');
+    var node = ReactDOM.findDOMNode(this);
+    var nodepos = $(node).offset();
     if (e.action === 'dragstart') {
       var toks = e.objid.split('|');
       this.setState({dragstartoid:toks[0], dragstarttype:toks[1], dragstartid:toks[2]})
+    } else if (e.action === 'connectormove') {
+      var toks = e.objid.split('|');
+      this.setState({dragstartoid:toks[0], dragstarttype:toks[1], dragstartid:toks[2]})
+      var x = nodepos.left
+      var y = nodepos.top
+      var w = $(node).width()
+      var h = $(node).height()
+      if (e.x > x && e.y > y && e.x < x+w && e.y < y+h) {
+        this.setState({overed:true});
+        if (_.indexOf(this.props.accepts, this.state.dragstarttype) >= 0) {
+          this.setState({overed:true,allowed:true});
+        } else {
+          this.setState({overed:true,allowed:false});
+        }
+      } else {
+        this.setState({overed:false});
+      }
+    } else if (e.action === 'connectordrop') {
+      if (this.state.overed && this.state.allowed) {
+        _.delay(function(oid) {
+          AppDispatcher.dispatch({
+            action:'drop',
+            objid:oid
+          })
+        }, 100, this.props.id);
+      }
+      this.setState({overed:false});
     }
   },
   componentDidMount: function() {

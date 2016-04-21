@@ -35,3 +35,43 @@ function faceDataToArray(str) {
   }
   return result;
 }
+
+function faceArrayToData (arr) {
+  var hs = "";
+  var data = arr.map(function (row) {
+    var b = 0x00;
+    for (var i in row) {
+      var v = row[i];
+      b = b << 1;
+      b += v;
+      //console.log("i:" + v + ", b:" + b);
+    }
+    var h = b.toString(16);
+    hs = hs + ("00" + h).slice(-2);
+    //console.log(hs)
+    return b
+  });
+  return hs;
+}
+
+var leds_blank = [
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0]
+];
+
+var leds_smiley = [
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [0, 1, 1, 0, 0, 1, 1, 0],
+  [0, 1, 1, 0, 0, 1, 1, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0],
+  [1, 0, 0, 0, 0, 0, 0, 1],
+  [0, 1, 0, 0, 0, 0, 1, 0],
+  [0, 0, 1, 1, 1, 1, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0, 0]
+];

@@ -3,20 +3,14 @@
 var Face;
 Face = React.createClass({
   getInitialState: function () {
+    var leds = leds_smiley;
+    if (this.props.isEditing) {
+      leds = leds_blank;
+    }
     return {
-      leds: [
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 1, 1, 0, 0, 1, 1, 0],
-        [0, 1, 1, 0, 0, 1, 1, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [1, 0, 0, 0, 0, 0, 0, 1],
-        [0, 1, 0, 0, 0, 0, 1, 0],
-        [0, 0, 1, 1, 1, 1, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0]
-      ],
+      leds: leds,
       faces: getFaces()
     };
-
   },
   itemClick: function (r, c) {
     if (this.state.leds[r][c] == 0) {
@@ -29,35 +23,11 @@ Face = React.createClass({
   onClear: function () {
     //$.get( "http://192.168.3.1/api/api.php?cmd=8x8&data=0000000000000000", function( data ) {});
     this.setState({
-      leds: [
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0]
-      ]
+      leds: leds_blank
     })
   },
   onSave: function () {
-    var hs = "";
-    var data = this.state.leds.map(function (row) {
-      var b = 0x00;
-      for (var i in row) {
-        var v = row[i];
-        b = b << 1;
-        b += v;
-        //console.log("i:" + v + ", b:" + b);
-      }
-      var h = b.toString(16);
-      hs = hs + ("00" + h).slice(-2);
-      //console.log(hs)
-      return b
-    });
-    this.setState({faces:storeFace(hs)});
-
+    this.setState({faces:storeFace(faceArrayToData(this.state.leds))});
     //$.get("http://192.168.3.1/api/api.php?cmd=8x8&data=" + hs, function (data) {
     //});
   },
@@ -65,7 +35,6 @@ Face = React.createClass({
     this.setState({leds:faceDataToArray(this.state.faces[e.target.id])});
   },
   onUseSavedFace: function(e) {
-    this.setState({leds:faceDataToArray(this.state.faces[e.target.id])});
     AppDispatcher.dispatch({
       action:'sendface',
       objid:this.props.objid,
@@ -78,7 +47,6 @@ Face = React.createClass({
   render: function () {
     var r = -1;
     var c = -1;
-
     var ledCol = function (col) {
       if (col > 0) {
         var ledStyle = {
@@ -96,7 +64,6 @@ Face = React.createClass({
         <div className="lb-led-sm" style={ledStyle} key={c++}></div>
       );
     };
-
     var ledEditCol = function (col) {
       if (col > 0) {
         var ledStyle = {
@@ -114,7 +81,6 @@ Face = React.createClass({
         <div className="lb-led-edit" style={ledStyle} key={c++} onClick={this.itemClick.bind(this,r,c)}></div>
       );
     }.bind(this);
-
     var ledRow = function (row) {
       c = -1;
       return (
@@ -131,7 +97,6 @@ Face = React.createClass({
         </div>
       );
     };
-
     var f=-1;
     var selectFace = function (facedata) {
       return (
@@ -147,15 +112,14 @@ Face = React.createClass({
         </div>
       );
     }.bind(this);
-
     var className = "lb-face";
     if (this.props.isEditing) {
       return (
         <div>
+          <h4>Create New Face</h4>
           <div>
             {this.state.leds.map(ledEditRow)}
           </div>
-
           <button className="btn btn-success" onClick={this.onClear}>Clear</button>
           <button className="btn btn-success" onClick={this.onSave}>Save</button>
           <h4>Saved Faces</h4>
@@ -163,12 +127,15 @@ Face = React.createClass({
         </div>
       );
     }
-
+    var leds = this.state.leds;
+    if (this.props.data && typeof (this.props.data) !== 'undefined') {
+      leds = faceDataToArray(this.props.data);
+    }
     return (
       <LBComponent toolName="Face" objid={this.props.objid} isInToolbox={this.props.isInToolbox}
                    isEditing={this.props.isEditing}>
         <div className={className}>
-          {this.state.leds.map(ledRow)}
+          {leds.map(ledRow)}
           <LBDropTarget id={this.props.objid} accepts={["input"]}></LBDropTarget>
         </div>
       </LBComponent>

@@ -1,3 +1,16 @@
+.modal.fade#showcode tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+  .modal_wrapper
+    .modal-dialog
+      .modal-content
+        .modal-header
+          button.close type="button" data-dismiss="modal" aria-hidden="true" ×
+          h4.modal-title Source Code
+        .modal-body
+          = react_component 'LBCodeEditor', {}
+        .modal-footer
+          button.btn.btn-default#confirm-dialog-button-left type="button" onClick="run()" Run
+          button.btn.btn-primary#confirm-dialog-button-right type="button" data-dismiss="modal" class="" Close
+
 .row.fullheight
   .col-xs-3.fullinnerheight
     .panel.panel-logica.fullinnerheight
@@ -12,3 +25,8 @@
         | Canvas
       .panel-body.canvas#lbcanvas
         = react_component 'LBCanvas', {}, {prerender: false, class: 'lbcanvas'}
+
+javascript:
+  function run() {
+    alert("run")
+  }

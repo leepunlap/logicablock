@@ -169,15 +169,11 @@ var LBComponent = React.createClass({
       var headerPart = (
         <h4 className="toollabel">{this.props.toolName}</h4>
       )
-      var footerPart = (
-        <br />
-      )
     }
     return (
       <div className="lbtoolwrapper">
         {headerPart}
         <LBSubComponent objid={this.props.objid} children={this.props.children} isInToolbox={this.props.isInToolbox} isEditing={this.props.isEditing}/>
-        {footerPart}
       </div>
     );
   }

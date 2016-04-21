@@ -1,10 +1,8 @@
 /* global AppDispatcher, React, ReactDOM */
 
-
-
 var LBCanvas = React.createClass({
   getInitialState: function() {
-    return {tooldragging:false,items:[]};
+    return {tooldragging:false,connectordragging:false,items:[]};
   },
   findToolByObjectId: function(objid) {
     for (var i in this.state.items) {
@@ -40,16 +38,21 @@ var LBCanvas = React.createClass({
     if (e.action === 'tooldragstart') {
       this.setState({tooldragging: true, tool: e.props, rx:e.rx, ry:e.ry, x:e.x, y:e.y})
     } else if (e.action === 'tooldragstop') {
-      var tool = {
-        uuid:Math.uuid(),
-        className:this.state.tool.className,
-        x: this.state.x-pos.left-this.state.rx+canvas.scrollLeft(),
-        y: this.state.y-pos.top-this.state.ry+canvas.scrollTop()
+      if(this.state.droppable) {
+        var tool = {
+          uuid:Math.uuid(),
+          className:this.state.tool.className,
+          x: this.state.x-pos.left-this.state.rx+canvas.scrollLeft(),
+          y: this.state.y-pos.top-this.state.ry+canvas.scrollTop()
+        }
+        this.state.items.push(tool);
+        this.setState({tooldragging: false, tool:null, items:this.state.items})
+      } else {
+        this.setState({tooldragging: false, tool:null})
       }
-      this.state.items.push(tool);
-      this.setState({tooldragging: false, tool:null, items:this.state.items})
+
     } else  if (e.action === 'tooldragging') {
-      this.setState({x: e.x, y: e.y})  
+      this.setState({x: e.x, y: e.y})
     } else  if (e.action === 'clearproject') {
       this.setState({items:[]})
     } else if (e.action === 'toolstartmove') {
@@ -69,9 +72,11 @@ var LBCanvas = React.createClass({
       tool.y = e.y-this.state.ry-pos.top+canvas.scrollTop();
       this.setState({items:this.state.items, x:tool.x, y:tool.y})
     } else if (e.action === 'dragstart') {
+      console.log(e)
       var toks = e.objid.split('|');
       this.setState({dragstartoid:toks[0], dragstarttype:toks[1], dragstartid:toks[2]})
     } else if (e.action === 'drop') {
+      console.log(e)
       var startobj = this.findToolByObjectId(this.state.dragstartoid);
       if (typeof(startobj[this.state.dragstarttype]) == 'undefined') {
         startobj[this.state.dragstarttype] = []
@@ -90,6 +95,24 @@ var LBCanvas = React.createClass({
       }
     } else if (e.action === 'unselecttool') {
       this.setState({selectedTool:null})
+    } else if (e.action === 'sendface') {
+      var tool = this.findToolByObjectId(e.objid)
+      tool.data = e.face;
+      this.setState({items:this.state.items})
+    } else if (e.action === 'connectormove') {
+      var toks = e.objid.split('|');
+      this.setState(
+        {
+          connectordragging:true,
+          connectorx:e.x,
+          connectory:e.y,
+          connectoroid:toks[0],
+          connectortype:toks[1],
+          connectorid:toks[2]
+        }
+      )
+    } else if (e.action === 'connectordrop') {
+      this.setState({connectordragging:false})
     }
   },
   componentDidMount: function() {
@@ -98,82 +121,42 @@ var LBCanvas = React.createClass({
   componentWillUnmount: function() {
     AppDispatcher.unregister(this.token)
   },
-  makeElementFromClassname: function(className,i,x,y) {
+  makeElementFromClassname: function(className,data,i,x,y) {
     if (className == 'lb-flowstart') {
-      return (<FlowStart className={className} objid={i} x={x} y={y} />)
+      return (<FlowStart max={1} className={className} data={data} objid={i} x={x} y={y} />)
     } else if (className == 'lb-ledarray') {
-      return (<EightByEight className={className} objid={i} x={x} y={y} />)
+      return (<EightByEight max={1}  className={className} data={data} objid={i} x={x} y={y} />)
     } else if (className == 'lb-flowend') {
-      return (<FlowEnd className={className} objid={i} x={x} y={y} />)
+      return (<FlowEnd max={1} className={className} data={data} objid={i} x={x} y={y} />)
     } else if (className == 'lb-controller') {
-      return (<Controller className={className} objid={i} x={x} y={y} />)
+      return (<Controller max={1} className={className} data={data} objid={i} x={x} y={y} />)
     } else if (className == 'lb-wheels') {
-      return (<Wheels className={className} objid={i} x={x} y={y} />)
+      return (<Wheels max={1} className={className} data={data} objid={i} x={x} y={y} />)
     } else if (className == 'lb-face') {
-      return (<Face className={className} objid={i} x={x} y={y} />)
+      return (<Face max={4} className={className} data={data} objid={i} x={x} y={y} />)
     }
   },
   render: function() {
+
     //
-    //  Highlight canvas on drag entry
+    //  Check unique items and only drop once
     //
-    var canvasStyle = {
-      position:'relative',
-      height:'100%',
-      borderBottomLeftRadius:10,
-      borderBottomRightRadius:10,
-      textAlign:'center'
-    }
-    var overlayStyle = {
-      position:'absolute',
-      width:'100%',
-      height:'100%',
-      backgroundColor:'rgba(128,128,128,0.4)',
-      borderBottomLeftRadius:10,
-      borderBottomRightRadius:10,
-    }
-    var pos = $('#lbcanvas').offset();
-    var x = this.state.x - pos.left - this.state.rx
-    var y = this.state.y - pos.top - this.state.ry
-    if (x > 0 && y > 0) {
-      overlayStyle.backgroundColor = 'rgba(128,255,128,0.4)'
-    }
+    var unique = {};
+
     //
-    //  Display item being dragged from toolbox
-    //
-    if (this.state.tool) {
-      //
-      //  Display loader while drag is in progress
-      //
-      var loaderElem = (
-        <div style={overlayStyle}></div>
-      )
-      //
-      //  Display dragged element
-      //
-      var draggingElemStyle = {
-        position:'fixed',
-        border: '1px solid red',
-        top: this.state.y - this.state.ry,
-        left: this.state.x - this.state.rx
-      };
-      var draggingTool = this.makeElementFromClassname(this.state.tool.className,0,0,0);
-      var draggingElem = (
-        <div style={draggingElemStyle}>
-          {draggingTool}
-        </div>
-      )
-    }
-    //
-    //  Now draw all items on canvas
+    //  Draw all items on canvas
     //
     var createItem = function(i) {
-      var elem = this.makeElementFromClassname(i.className,i.uuid,i.x,i.y);
+      var elem = this.makeElementFromClassname(i.className,i.data,i.uuid,i.x,i.y);
       var placedToolStyle = {
         position:'absolute',
         top:i.y,
         left:i.x
       }
+      if (typeof(unique[i.className]) == 'undefined') {
+        unique[i.className] = 0;
+      }
+      unique[i.className]++;
       if (i.uuid === this.state.selectedTool) {
         placedToolStyle.border = '1px solid blue'
       }
@@ -183,7 +166,6 @@ var LBCanvas = React.createClass({
         </div>
       )
     }.bind(this);
-
     var createConnection = function(lbobject) {
       var drawLine = function(l) {
         var dest = this.findToolByObjectId(l.objid);
@@ -212,16 +194,96 @@ var LBCanvas = React.createClass({
           {outputs}
         </div>
       )
-    }.bind(this)
+    }.bind(this);
+    var createdItems = (<div>{this.state.items.map(createItem)}</div>);
+    var createdConnections = (<div>{this.state.items.map(createConnection)}</div>);
+    //
+    //  Highlight canvas on drag entry
+    //
+    var canvasStyle = {
+      position:'relative',
+      height:'100%',
+      borderBottomLeftRadius:10,
+      borderBottomRightRadius:10,
+      textAlign:'center'
+    }
+    var overlayStyle = {
+      position:'absolute',
+      width:'100%',
+      height:'100%',
+      backgroundColor:'rgba(128,128,128,0.4)',
+      borderBottomLeftRadius:10,
+      borderBottomRightRadius:10,
+    }
 
-    var createdItems = (<div>{this.state.items.map(createItem)}</div>)
-    var createdConnections = (<div>{this.state.items.map(createConnection)}</div>)
+    //
+    //  Display item being dragged from toolbox
+    //
+    if (this.state.tool) {
+      //
+      //  Display loader while drag is in progress
+      //
+      var loaderElem = (
+        <div style={overlayStyle}></div>
+      )
+      //
+      //  Display dragged element
+      //
+      var draggingElemStyle = {
+        position:'fixed',
+        border: '1px solid red',
+        top: this.state.y - this.state.ry,
+        left: this.state.x - this.state.rx
+      };
+
+
+
+      var draggingTool = this.makeElementFromClassname(this.state.tool.className,null,0,0,0);
+      var draggingElem = (
+        <div style={draggingElemStyle}>
+          {draggingTool}
+        </div>
+      )
+
+      var pos = $('#lbcanvas').offset();
+      var x = this.state.x - pos.left - this.state.rx
+      var y = this.state.y - pos.top - this.state.ry
+
+      if (x > 0 && y > 0) {
+        if (unique[this.state.tool.className] >= draggingTool.props.max) {
+          this.state.droppable=false;
+          overlayStyle.backgroundColor = 'rgba(255,128,128,0.4)'
+        } else {
+          this.state.droppable=true;
+          overlayStyle.backgroundColor = 'rgba(128,255,128,0.4)'
+        }
+      }
+    }
+    draggingConnectorElem = null;
+    if (this.state.connectordragging) {
+      var dragConnectorStyle = {
+        position:'fixed',
+        top:this.state.connectory,
+        left:this.state.connectorx,
+        backgroundColor: 'rgba(128,128,255,0.4)',
+        border: '1px solid blue',
+        borderRadius:15,
+        borderTopLeftRadius:0,
+        width:30,
+        height:30,
+        fontSize:22
+      };
+      draggingConnectorElem = (<div style={dragConnectorStyle}>{this.state.connectorid}</div>)
+    }
+
+
     return (
       <div style={canvasStyle}>
         {createdConnections}
         {createdItems}
         {loaderElem}
         {draggingElem}
+        {draggingConnectorElem}
       </div>
     );
   }

@@ -16,6 +16,9 @@ var Controller = React.createClass({
       ]
     };
   },
+  onEditCode: function() {
+    $('#showcode').modal('show');
+  },
   render: function() {
     var that = this;
     var objid = this.props.objid;
@@ -58,6 +61,8 @@ var Controller = React.createClass({
           {this.state.inputs.map(inputConnectorProps)}
           <h4>Outputs</h4>
           {this.state.outputs.map(outputConnectorProps)}
+          <h4>Code</h4>
+          <button className="btn btn-default" onClick={this.onEditCode}>Edit</button>
         </div>
       )
     }
