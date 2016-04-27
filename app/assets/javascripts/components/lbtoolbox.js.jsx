@@ -43,6 +43,20 @@ var LBToolbox = React.createClass({
       objid:this.state.objid
     })
   },
+  onRun: function(e){
+    if (typeof(lbRun) == 'undefined') {
+      lbMsg("Runtime Error","Must define fuction lbRun()")
+    } else {
+      lbRun();
+    }
+  },
+  onStop: function(e){
+    if (typeof(lbStop) == 'undefined') {
+      lbMsg("Runtime Error","Must define fuction lbStop()")
+    } else {
+      lbStop();
+    }
+  },
   render: function() {
     if (this.state.objid) {
       if (this.state.editclassname == 'lb-face') {
@@ -71,8 +85,8 @@ var LBToolbox = React.createClass({
           <Wheels isInToolbox={true} />
           
           <button className="btn btn-success" onClick={this.onClear}>Clear</button>
-          <button className="btn btn-success" onClick={this.onLoad}>Load</button>
-          <button className="btn btn-success" onClick={this.onSave}>Save</button>
+          <button className="btn btn-success" onClick={this.onRun}>Run</button>
+          <button className="btn btn-success" onClick={this.onStop}>Stop</button>
         </div>
       )
     }

@@ -18,7 +18,7 @@ var LBCodeEditor = React.createClass({
     editor.getSession().setMode("ace/mode/javascript");
     editor.getSession().on('change', function () {
       document.getElementById("view").innerText = editor.getSession().getValue();
-      console.log(document.getElementById("view").innerText)
+      //console.log(document.getElementById("view").innerText)
     });
     editor.setOptions({
       fontSize: "18pt"
@@ -38,12 +38,15 @@ var LBCodeEditor = React.createClass({
     this.setState({visible:false,code:null})
   },
   render: function() {
+    var hiddenStyle = {
+      display:'none'
+    };
     if (this.state.visible) {
       return (
         <div>
           <pre id="editor">
           </pre>
-          <pre id="view">
+          <pre style={hiddenStyle} id="view">
           </pre>
         </div>
       );

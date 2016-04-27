@@ -8,7 +8,18 @@
         .modal-body
           = react_component 'LBCodeEditor', {}
         .modal-footer
-          button.btn.btn-default#confirm-dialog-button-left type="button" onClick="run()" Run
+          button.btn.btn-default#confirm-dialog-button-left type="button" onClick="savelbcode()" Save
+          button.btn.btn-primary#confirm-dialog-button-right type="button" data-dismiss="modal" class="" Close
+
+.modal.fade#showmsg tabindex="-1" role="dialog" aria-labelledby="myMsg" aria-hidden="true"
+  .modal_wrapper
+    .modal-dialog
+      .modal-content#errmodalcontent
+        .modal-header
+          button.close type="button" data-dismiss="modal" aria-hidden="true" ×
+          h4.modal-title#msgtitle Error Message
+        .modal-body#msgbody
+        .modal-footer
           button.btn.btn-primary#confirm-dialog-button-right type="button" data-dismiss="modal" class="" Close
 
 .row.fullheight
@@ -25,8 +36,3 @@
         | Canvas
       .panel-body.canvas#lbcanvas
         = react_component 'LBCanvas', {}, {prerender: false, class: 'lbcanvas'}
-
-javascript:
-  function run() {
-    alert("run")
-  }

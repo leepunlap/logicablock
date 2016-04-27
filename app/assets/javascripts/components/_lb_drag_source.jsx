@@ -61,7 +61,7 @@ var LBDragSource = React.createClass({
   },
   render: function() {
     return (
-      <div className="lb-draggable" draggable="true"  onTouchStart={this.onTouchStart} onDragStart={this.onDragStart} id={this.props.id}>{this.props.name}</div>
+      <div className="lb-draggable col-xs-3" draggable="true"  onTouchStart={this.onTouchStart} onDragStart={this.onDragStart} id={this.props.id}>{this.props.name}</div>
     );
   }
 })

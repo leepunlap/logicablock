@@ -3,9 +3,9 @@
 var Face;
 Face = React.createClass({
   getInitialState: function () {
-    var leds = leds_smiley;
-    if (this.props.isEditing) {
-      leds = leds_blank;
+    var leds = leds_blank
+    if (this.props.isInToolbox) {
+      leds = leds_smiley;;
     }
     return {
       leds: leds,
@@ -27,9 +27,8 @@ Face = React.createClass({
     })
   },
   onSave: function () {
-    this.setState({faces:storeFace(faceArrayToData(this.state.leds))});
-    //$.get("http://192.168.3.1/api/api.php?cmd=8x8&data=" + hs, function (data) {
-    //});
+    var hs = faceArrayToData(this.state.leds);
+    this.setState({faces:storeFace(hs)});
   },
   onLoadSavedFace: function(e) {
     this.setState({leds:faceDataToArray(this.state.faces[e.target.id])});
@@ -40,6 +39,8 @@ Face = React.createClass({
       objid:this.props.objid,
       face:this.state.faces[e.target.id]
     })
+    $.get("http://192.168.3.1/api/api.php?cmd=8x8&data=" + this.state.faces[e.target.id], function (data) {
+    });
   },
   onDeleteSavedFace: function(e) {
     this.setState({faces:deleteFace(e.target.id)})
@@ -101,7 +102,7 @@ Face = React.createClass({
     var selectFace = function (facedata) {
       return (
         <div className="row" key={f++}>
-          <div className="col-xs-5">
+          <div className="col-xs-6">
             {faceDataToArray(facedata).map(ledRow)}
           </div>
           <div className="col-xs-6">

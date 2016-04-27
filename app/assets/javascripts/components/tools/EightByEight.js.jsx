@@ -2,36 +2,46 @@
 
 var EightByEight = React.createClass({
   getInitialState: function() {
-    return {leds:[
-      [1,0,0,0,0,0,0,0],
-      [0,2,0,0,0,0,0,0],
-      [0,0,3,0,0,0,0,0],
-      [0,0,0,4,0,0,0,0],
-      [0,0,0,0,5,0,0,0],
-      [0,0,0,0,0,6,0,0],
-      [0,0,0,0,0,0,7,0],
-      [0,0,0,0,0,0,0,8],
-    ]};
+    return {leds:leds_blank};
   },
 
   render: function() {
-    var id=0;
+    var r = -1;
+    var c = -1;
     var ledCol = function(col) {
-      return(
-        <div className="lb-led" key={id++}></div>
+
+      if (col > 0) {
+        var ledStyle = {
+          backgroundColor: 'red',
+          border: '1px solid red'
+        };
+      } else {
+        var ledStyle = {
+          border: 'solid 1px #ddd',
+          backgroundColor: '#fff',
+          boxShadow: '1px 1px 1px #ddd'
+        };
+      }
+      return (
+        <div className="lb-led" style={ledStyle} key={c++}></div>
       );
     }
     var ledRow = function(row) {
+      c = -1;
       return(
-        <div className="lb-ledrow" key={id++}>
+        <div className="lb-ledrow" key={r++}>
           {row.map(ledCol)}
         </div>
       );
+    };
+    var leds = this.state.leds;
+    if (this.props.data && typeof (this.props.data) !== 'undefined') {
+      leds = faceDataToArray(this.props.data);
     }
     return (
       <LBComponent toolName="8x8 Display" objid={this.props.objid} isInToolbox={this.props.isInToolbox} isEditing={this.props.isEditing}>
         <div className="lb-ledarray">
-          {this.state.leds.map(ledRow)}
+          {leds.map(ledRow)}
           <LBDropTarget id={this.props.objid} accepts={["output"]}></LBDropTarget>
         </div>
       </LBComponent>

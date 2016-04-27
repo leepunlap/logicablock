@@ -273,11 +273,18 @@ body {
   margin: 0px 20px;
 }
 .modal-content{
-  height:80%;
-}
+   height:80%;
+ }
+
 .modal-title {
   font-size:24px;
 }
 .modal-body {
   height:calc(100% - 150px);
+}
+#errmodalcontent {
+  height:50%;
+}
+#msgbody {
+  font-size:24px;
 }

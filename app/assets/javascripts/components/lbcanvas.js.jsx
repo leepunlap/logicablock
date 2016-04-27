@@ -72,20 +72,29 @@ var LBCanvas = React.createClass({
       tool.y = e.y-this.state.ry-pos.top+canvas.scrollTop();
       this.setState({items:this.state.items, x:tool.x, y:tool.y})
     } else if (e.action === 'dragstart') {
-      console.log(e)
       var toks = e.objid.split('|');
       this.setState({dragstartoid:toks[0], dragstarttype:toks[1], dragstartid:toks[2]})
     } else if (e.action === 'drop') {
-      console.log(e)
       var startobj = this.findToolByObjectId(this.state.dragstartoid);
       if (typeof(startobj[this.state.dragstarttype]) == 'undefined') {
         startobj[this.state.dragstarttype] = []
       }
-      var m = _.find(startobj[this.state.dragstarttype], { 'n': this.state.dragstartid, 'objid': e.objid })
-      if (typeof(m) == 'undefined') {
-        startobj[this.state.dragstarttype].push({ 'n': this.state.dragstartid, 'objid': e.objid })
-        this.setState({items: this.state.items})
+      if (typeof(startobj.input) !== 'undefined') {
+        for(var i = startobj.input.length - 1; i >= 0; i--) {
+          if(startobj.input[i].n == this.state.dragstartid || startobj.input[i].objid == e.objid) {
+            startobj.input.splice(i, 1);
+          }
+        }
       }
+      if (typeof(startobj.output) !== 'undefined') {
+        for(var i = startobj.output.length - 1; i >= 0; i--) {
+          if(startobj.output[i].n == this.state.dragstartid || startobj.output[i].objid == e.objid) {
+            startobj.output.splice(i, 1);
+          }
+        }
+      }
+      startobj[this.state.dragstarttype].push({ 'n': this.state.dragstartid, 'objid': e.objid });
+      this.setState({items: this.state.items})
     } else if (e.action === 'deletetool') {
       for (var i in this.state.items) {
         if (this.state.items[i].uuid === e.objid) {
@@ -113,6 +122,15 @@ var LBCanvas = React.createClass({
       )
     } else if (e.action === 'connectordrop') {
       this.setState({connectordragging:false})
+    } else  if (e.action === 'lboutput') {
+      var outputobj = this.findToolByObjectId(e.objid);
+      outputobj.data = e.data;
+      this.setState({items:this.state.items})
+    } else  if (e.action === 'lbcopy') {
+      var inputobj = this.findToolByObjectId(e.fromobjid);
+      var outputobj = this.findToolByObjectId(e.toobjid);
+      outputobj.data = inputobj.data;
+      this.setState({items:this.state.items})
     }
   },
   componentDidMount: function() {
@@ -169,8 +187,24 @@ var LBCanvas = React.createClass({
     var createConnection = function(lbobject) {
       var drawLine = function(l) {
         var dest = this.findToolByObjectId(l.objid);
+        if (!dest) {
+          if (typeof(lbobject.input) !== 'undefined') {
+            for(var i = lbobject.input.length - 1; i >= 0; i--) {
+              if(lbobject.input[i] == l) {
+                lbobject.input.splice(i, 1);
+              }
+            }
+          }
+          if (typeof(lbobject.output) !== 'undefined') {
+            for(var i = lbobject.output.length - 1; i >= 0; i--) {
+              if(lbobject.output[i] == l) {
+                lbobject.output.splice(i, 1);
+              }
+            }
+          }
+          return;
+        }
         var closestConn = closestConnectorStyle(lbobject.x,lbobject.y,lbobject.uuid,dest.x,dest.y,l.objid);
-
         var lineStyle = createNavLine(closestConn.srcStyle.left,closestConn.srcStyle.top,closestConn.destStyle.left,closestConn.destStyle.top)
         return (
           <div key={l.n+"-"+l.objid}>
@@ -182,18 +216,24 @@ var LBCanvas = React.createClass({
           </div>
         )
       }.bind(this)
-      if (typeof(lbobject.input) !== 'undefined') {
-        var inputs =  lbobject.input.map(drawLine)
+      if (lbobject.className == 'lb-controller') {
+        lbSetController(lbobject);
       }
-      if (typeof(lbobject.output) !== 'undefined') {
-        var outputs = lbobject.output.map(drawLine)
+      if ((typeof(lbobject.input) !== 'undefined') || (typeof(lbobject.output) !== 'undefined')) {
+        if (typeof(lbobject.input) !== 'undefined') {
+          var inputs =  lbobject.input.map(drawLine)
+        }
+        if (typeof(lbobject.output) !== 'undefined') {
+          var outputs = lbobject.output.map(drawLine)
+        }
+        return (
+          <div key={'line-'+lbobject.uuid}>
+            {inputs}
+            {outputs}
+          </div>
+        )
       }
-      return (
-        <div key={'line-'+lbobject.uuid}>
-          {inputs}
-          {outputs}
-        </div>
-      )
+
     }.bind(this);
     var createdItems = (<div>{this.state.items.map(createItem)}</div>);
     var createdConnections = (<div>{this.state.items.map(createConnection)}</div>);
