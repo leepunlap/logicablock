@@ -20,3 +20,4 @@ bin
 log
 vendor
 .idea
+Gemfile.lock
