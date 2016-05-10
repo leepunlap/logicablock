@@ -21,3 +21,4 @@ log
 vendor
 .idea
 Gemfile.lock
+node_modules

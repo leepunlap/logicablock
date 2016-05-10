@@ -9,3 +9,15 @@ html
 		= csrf_meta_tags
 	body id="body"
 		== yield
+
+javascript:
+  var socket = io.connect("http://localhost:3001");
+  socket.on('msg', function (data) {
+    console.log(data);
+    socket.emit('msg', {my: 'data'});
+  });
+  //setInterval(function() {
+  //  console.log("hi")
+  //  socket.emit('msg', {my: 'data'});
+  //},1000)
+
