@@ -15,10 +15,9 @@
 /log/*
 !/log/.keep
 /tmp
-
-bin
-log
-vendor
-.idea
-Gemfile.lock
 node_modules
+.keep
+bin
+Gemfile.lock
+.idea
+test

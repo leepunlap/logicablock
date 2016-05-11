@@ -82,6 +82,7 @@ var LBToolbox = React.createClass({
           <EightByEight isInToolbox={true} />
           <Controller isInToolbox={true} />
           <Face isInToolbox={true} />
+
           <Wheels isInToolbox={true} />
           
           <button className="btn btn-success" onClick={this.onClear}>Clear</button>
