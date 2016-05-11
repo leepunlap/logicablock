@@ -152,6 +152,8 @@ var LBCanvas = React.createClass({
       return (<Wheels max={1} className={className} data={data} objid={i} x={x} y={y} />)
     } else if (className == 'lb-face') {
       return (<Face max={4} className={className} data={data} objid={i} x={x} y={y} />)
+    } else if (className == 'lb-remote') {
+      return (<Remote max={4} className={className} data={data} objid={i} x={x} y={y} />)
     }
   },
   render: function() {

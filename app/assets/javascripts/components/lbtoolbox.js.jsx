@@ -65,7 +65,9 @@ var LBToolbox = React.createClass({
         var toolscontrol = <Controller isEditing={true} objid={this.state.objid} />
       } else if (this.state.editclassname == 'lb-ledarray') {
         var toolscontrol = <EightByEight isEditing={true} objid={this.state.objid} />
-      } else {
+      } else if (this.state.editclassname == 'lb-remote') {
+        var toolscontrol = <Remote siohost={this.props.siohost} isEditing={true} objid={this.state.objid} />
+      }else {
         var toolscontrol = <p>Coming Soon</p>
       }
       var tools = (
@@ -82,7 +84,7 @@ var LBToolbox = React.createClass({
           <EightByEight isInToolbox={true} />
           <Controller isInToolbox={true} />
           <Face isInToolbox={true} />
-
+          <Remote isInToolbox={true} />
           <Wheels isInToolbox={true} />
           
           <button className="btn btn-success" onClick={this.onClear}>Clear</button>

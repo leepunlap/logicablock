@@ -1,0 +1,36 @@
+@font-face {
+    font-family:'Amutham';
+    src: url('/fonts/Amutham.ttf.woff') format('woff'),
+    url('/fonts/Amutham.ttf.svg#Amutham') format('svg'),
+    url('/fonts/Amutham.ttf.eot'),
+    url('/fonts/Amutham.ttf.eot?#iefix') format('embedded-opentype');
+    font-weight:normal;
+    font-style:normal;
+}
+
+body {
+    font-family:'Amutham';
+    background-color: #01aef0;
+}
+
+.navbar-default {
+     background-color: inherit;
+     border-color: #01aef0;
+}
+
+.logo {
+    width:200px;
+}
+
+.navbar-brand {
+    height:auto;
+}
+
+.btn-perdoco {
+    border-radius:10px;
+    border:3px solid gray;
+    color:gray;
+    font-size:36px;
+    width:100%;
+    margin-bottom: 20px;
+}

@@ -28,7 +28,7 @@
       .panel-heading
         | Toolbox
       .panel-body.canvas#lbtoolbox
-        = react_component 'LBToolbox', {}, {prerender: false, class: 'lbtoolbox'}
+        = react_component 'LBToolbox', {siohost:"http://#{request.host}:3001"}, {prerender: false, class: 'lbtoolbox'}
 
   .col-xs-9.fullinnerheight
     .panel.panel-logica.fullinnerheight
