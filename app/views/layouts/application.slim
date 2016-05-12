@@ -17,6 +17,15 @@ javascript:
     console.log(data);
     socket.emit('msg', {my: 'data'});
   });
+  socket.on('remote', function (data) {
+    AppDispatcher.dispatch({
+      action: 'remote',
+      button: data.button,
+      objid: data.oid
+    })
+  });
+
+
   //setInterval(function() {
   //  console.log("hi")
   //  socket.emit('msg', {my: 'data'});

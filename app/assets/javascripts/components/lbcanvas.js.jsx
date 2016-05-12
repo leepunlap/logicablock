@@ -131,6 +131,39 @@ var LBCanvas = React.createClass({
       var outputobj = this.findToolByObjectId(e.toobjid);
       outputobj.data = inputobj.data;
       this.setState({items:this.state.items})
+    } else  if (e.action === 'lbclear') {
+      var outputobj = this.findToolByObjectId(e.objid);
+      outputobj.data = "0000000000000000"
+      this.setState({items:this.state.items})
+    } else if (e.action === 'remote') {
+      var remotetool = null;
+      for (var i in this.state.items) {
+        var tool = this.state.items[i]
+        if (tool.className === 'lb-remote' && tool.uuid == e.objid) {
+          remotetool = tool;
+        }
+        if (remotetool) {
+          if (this.state.selectedTool) {
+            var selectedTool = this.state.selectedTool;
+            this.setState({selectedTool:null})
+            _.delay(function() {
+              AppDispatcher.dispatch({
+                action:'unselecttool',
+                objid:selectedTool
+              })
+            },20)
+          }
+          remotetool.data = 1;
+          this.setState({items:this.state.items})
+          setTimeout(function() {
+            remotetool.data = 0;
+            this.setState({items:this.state.items})
+          }.bind(this),250)
+          _.delay(function() {
+            lbRemoteButtonPressed (remotetool.uuid, e.button)
+          },20)
+        }
+      }
     }
   },
   componentDidMount: function() {

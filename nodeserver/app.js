@@ -13,12 +13,24 @@ io.on('connection', function(socket){
     console.log('a user connected');
 
     socket.on('msg', function(data){
+        console.log("msg");
         console.log('msg : ' + data);
     });
-
-    socket.emit("msg",{he:'is'})
-
-
+    socket.on('remote', function(data){
+        console.log("remote");
+        console.log(data);
+        io.emit('remote',data);
+    });
+    socket.on('register', function(data){
+        console.log("register");
+        console.log(data);
+        io.emit('register',data);
+    });
+    socket.on('unregister', function(data){
+        console.log("register");
+        console.log(data);
+        io.emit('unregister',data);
+    });
 });
 
 

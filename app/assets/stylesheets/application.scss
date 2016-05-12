@@ -46,6 +46,10 @@ body {
   padding-top:15px;
 }
 
+.lbtoolbox {
+  padding-right:0px;
+}
+
 .btn-xs {
   font-size:18px;
   margin:2px;
@@ -213,14 +217,15 @@ hr {
 
 .lb-led-edit {
   background-color:#ccc;
-  height:25px;
-  width:25px;
+  height:20px;
+  width:20px;
   margin:1px;
   border:solid 1px #888;
   border-radius:3px;
   display:inline-block;
   box-shadow:1px 1px 1px #aaa;
 }
+
 
 
 .lb-flowstart {
@@ -250,6 +255,10 @@ hr {
   background-color:rgba(255,255,255,0.8);
   padding:2px;
   border:solid 1px #ddd;
+}
+
+.lbfacethumb {
+  padding:5px;
 }
 
 .lb-remote {

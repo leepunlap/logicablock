@@ -19,15 +19,14 @@ var Remote = React.createClass({
 
     if (this.props.isEditing) {
 
-      var remoteURL = this.props.siohost + "?o=" + this.props.objid;
+      var remoteURL = this.props.siohost + "/#/remote?o=" + this.props.objid;
 
       return (
         <div>
           <h4>Scan QR Code for Remote</h4>
+          <center>
           <a target="_new" href={remoteURL}><img className="qrImage" src={create_qrcode(remoteURL, 5)}/></a>
-          <input class="input" />
-          <input class="input" />
-
+          </center>
           <button className="btn btn-success" onClick={this.onClear}>Clear</button>
           <button className="btn btn-success" onClick={this.onSave}>Save</button>
 
@@ -35,9 +34,15 @@ var Remote = React.createClass({
       );
     }
 
+    if (this.props.data > 0) {
+      var selectedStyle = {
+        border: 'solid 2px red',
+      };
+    }
+
     return (
       <LBComponent toolName="Remote" objid={this.props.objid} isInToolbox={this.props.isInToolbox} isEditing={this.props.isEditing}>
-        <div className="lb-remote">
+        <div className="lb-remote" style={selectedStyle}>
           <img className="remoteImage" src="/images/remote_control.png" />
           <LBDropTarget id={this.props.objid} accepts={["input"]}></LBDropTarget>
         </div>

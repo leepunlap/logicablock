@@ -19,6 +19,18 @@ function lbMsg(title,msg) {
   $('#showmsg').modal('show');
 }
 
+function lbRemoteButtonPressed (oid, button) {
+  if (!lbcontroller) {
+    lbMsg("No Controller","Drag controller onto canvas to create one");
+    return;
+  }
+  if (typeof(lbOnRemote) == 'undefined') {
+    lbMsg("Runtime Error","Must define fuction lbOnRemote()")
+  } else {
+    lbOnRemote(oid,button);
+  }
+}
+
 function lbSetController (o) {
   function setIO (io) {
     lbcontroller[io.n] = io.objid;
@@ -53,6 +65,7 @@ function lbCopy(input,output) {
     lbMsg("No Controller","Drag controller onto canvas to create one");
     return;
   }
+  console.log(lbcontroller)
   if (typeof(lbcontroller[input]) == 'undefined') {
     lbMsg("No Connection",input+" is not connected")
   } else if (typeof(lbcontroller[output]) == 'undefined') {
@@ -62,6 +75,21 @@ function lbCopy(input,output) {
       action:'lbcopy',
       fromobjid:lbcontroller[input],
       toobjid:lbcontroller[output],
+    })
+  }
+}
+
+function lbClear(output) {
+  if (!lbcontroller) {
+    lbMsg("No Controller","Drag controller onto canvas to create one");
+    return;
+  }
+  if (typeof(lbcontroller[output]) == 'undefined') {
+    lbMsg("No Connection",output+" is not connected")
+  } else {
+    AppDispatcher.dispatch({
+      action:'lbclear',
+      objid:lbcontroller[output],
     })
   }
 }

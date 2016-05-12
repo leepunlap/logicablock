@@ -21,9 +21,10 @@ Face = React.createClass({
     this.setState({led: this.state.leds});
   },
   onClear: function () {
+    console.log("onclear")
     //$.get( "http://192.168.3.1/api/api.php?cmd=8x8&data=0000000000000000", function( data ) {});
     this.setState({
-      leds: leds_blank
+      leds: faceDataToArray("0000000000000000")
     })
   },
   onSave: function () {
@@ -102,10 +103,10 @@ Face = React.createClass({
     var selectFace = function (facedata) {
       return (
         <div className="row" key={f++}>
-          <div className="col-xs-6">
+          <div className="col-xs-6 lbfacethumb">
             {faceDataToArray(facedata).map(ledRow)}
           </div>
-          <div className="col-xs-6">
+          <div className="col-xs-6 lbfacethumb">
             <button className="btn btn-default btn-xs" id={f} onClick={this.onLoadSavedFace}>Load</button>
             <button className="btn btn-default btn-xs" id={f} onClick={this.onUseSavedFace}>Use</button>
             <button className="btn btn-default btn-xs" id={f} onClick={this.onDeleteSavedFace}>Delete</button>

@@ -20,10 +20,12 @@ app.run(function($rootScope, $http) {
 
 })
 
-app.controller('RemoteController', function ($rootScope, $scope, $http) {
-  console.log("lalalala")
+app.controller('RemoteController', function ($rootScope, $scope, $http, $location ) {
   $scope.onClick = function(b) {
+    var oid = $location.search().o;
     console.log(b)
+    console.log(oid)
+    socket.emit('remote', { oid: oid, button: b });
   }
 });
 
