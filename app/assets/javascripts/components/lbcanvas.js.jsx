@@ -318,7 +318,11 @@ var LBCanvas = React.createClass({
       draggingConnectorElem = (<div style={dragConnectorStyle}>{this.state.connectorid}</div>)
     }
 
-
+    var logoElem = (
+      <img className="logoStyle" src="/images/perdoco.png">
+      </img>
+    )
+    
     return (
       <div style={canvasStyle}>
         {createdConnections}
@@ -326,6 +330,7 @@ var LBCanvas = React.createClass({
         {loaderElem}
         {draggingElem}
         {draggingConnectorElem}
+        {logoElem}
       </div>
     );
   }

@@ -71,7 +71,7 @@ var LBToolbox = React.createClass({
         var toolscontrol = <p>Coming Soon</p>
       }
       var tools = (
-        <div>
+        <div className="toolContainer">
           <h2>{this.state.editclassname}</h2>
           {toolscontrol}
           <button className="btn btn-danger" onClick={this.onDelete}>Delete</button>
@@ -80,7 +80,7 @@ var LBToolbox = React.createClass({
       )
     } else {
       var tools = (
-        <div>
+        <div className="toolContainer">
           <EightByEight isInToolbox={true} />
           <Controller isInToolbox={true} />
           <Face isInToolbox={true} />

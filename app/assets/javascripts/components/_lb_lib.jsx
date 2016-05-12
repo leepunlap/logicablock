@@ -166,14 +166,18 @@ var LBComponent = React.createClass({
     //  Display header only if tool is inside toolbox, otherwise just display the tool itself
     //
     if (this.props.isInToolbox) {
-      var headerPart = (
-        <h4 className="toollabel">{this.props.toolName}</h4>
-      )
+        var headerPart = (
+            <h4 className="toollabel">{this.props.toolName}</h4>
+        );
+        var footerPart = (
+            <hr />
+        )
     }
     return (
       <div className="lbtoolwrapper">
         {headerPart}
         <LBSubComponent objid={this.props.objid} children={this.props.children} isInToolbox={this.props.isInToolbox} isEditing={this.props.isEditing}/>
+        {footerPart}
       </div>
     );
   }

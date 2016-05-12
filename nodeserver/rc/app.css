@@ -10,12 +10,18 @@
 
 body {
     font-family:'Amutham';
+    color:white;
+    font-size:24px;
     background-color: #01aef0;
 }
 
 .navbar-default {
      background-color: inherit;
      border-color: #01aef0;
+}
+
+.navbar-brand {
+    padding-left:0px;
 }
 
 .logo {

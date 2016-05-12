@@ -12,17 +12,20 @@
 </head>
 
 <body ng-App="angularApp">
-<nav class="navbar navbar-default">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">
-                <img alt="Brand" src="/img/perdoco.png" class="logo">
-            </a>
+<div class="container">
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                    <img alt="Brand" src="/img/perdoco.png" class="logo">
+                </a>
+            </div>
         </div>
-    </div>
-</nav>
-<div ng-view></div>
-
+    </nav>
+    <center>
+        <div ng-view></div>
+    </center>
+</div>
 
 <script src="/socket.io/socket.io.js"></script>
 <script src="/js/jquery-1.11.1.min.js"></script>
@@ -35,7 +38,7 @@
     var socket = io();
     socket.on('msg', function (data) {
         console.log(data);
-        socket.emit('my other event', { my: 'data' });
+        socket.emit('msg', { cmd: 'registerremote' });
     });
 </script>
 </body>
