@@ -32,9 +32,14 @@ function createNavLine(x1, y1, x2, y2, display) {
 
 function closestConnectorStyle(x,y,srcobjid,dx,dy,destobjid) {
   var srcobj = $('#' + srcobjid)[0];
+  var destobj = $('#' + destobjid)[0];
+
+  if (!srcobj) return;
+  if (!destobj) return;
+
   var sw = srcobj.clientWidth;
   var sh = srcobj.clientHeight;
-  var destobj = $('#' + destobjid)[0];
+
   var dw = destobj.clientWidth;
   var dh = destobj.clientHeight;
   var srcconns = [];

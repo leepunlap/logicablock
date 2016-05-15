@@ -65,7 +65,6 @@ function lbCopy(input,output) {
     lbMsg("No Controller","Drag controller onto canvas to create one");
     return;
   }
-  console.log(lbcontroller)
   if (typeof(lbcontroller[input]) == 'undefined') {
     lbMsg("No Connection",input+" is not connected")
   } else if (typeof(lbcontroller[output]) == 'undefined') {

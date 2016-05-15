@@ -14,7 +14,7 @@ var Remote = React.createClass({
       var qr = qrcode(typeNumber || 4, errorCorrectLevel || 'M');
       qr.addData(text);
       qr.make();
-      return qr.createImgTag();
+      return qr.createImgTag(4);
     };
 
     if (this.props.isEditing) {

@@ -2,7 +2,18 @@
 
 var LBCanvas = React.createClass({
   getInitialState: function() {
-    return {tooldragging:false,connectordragging:false,items:[]};
+    var projects = loadProjects();
+    var items = [];
+    if (projects['autosave']) {
+      items = projects["autosave"];
+      //
+      //  Redraw to trigger drawing lines after objects are created
+      //
+      setTimeout(function() {
+        this.setState({items:this.state.items})
+      }.bind(this),50);
+    }
+    return {tooldragging:false,connectordragging:false,items:items};
   },
   findToolByObjectId: function(objid) {
     for (var i in this.state.items) {
@@ -39,14 +50,22 @@ var LBCanvas = React.createClass({
       this.setState({tooldragging: true, tool: e.props, rx:e.rx, ry:e.ry, x:e.x, y:e.y})
     } else if (e.action === 'tooldragstop') {
       if(this.state.droppable) {
-        var tool = {
-          uuid:Math.uuid(),
-          className:this.state.tool.className,
-          x: this.state.x-pos.left-this.state.rx+canvas.scrollLeft(),
-          y: this.state.y-pos.top-this.state.ry+canvas.scrollTop()
+        var toolx = this.state.x-pos.left-this.state.rx+canvas.scrollLeft();
+        var tooly = this.state.y-pos.top-this.state.ry+canvas.scrollTop();
+        if (toolx > 0 && tooly > 0) {
+          var tool = {
+            uuid:Math.uuid(),
+            className:this.state.tool.className,
+            data:null,
+            conf:null,
+            x: toolx,
+            y: tooly
+          };
+          this.state.items.push(tool);
+          this.setState({tooldragging: false, tool:null, items:this.state.items})
+        } else {
+          this.setState({tooldragging: false, tool:null})
         }
-        this.state.items.push(tool);
-        this.setState({tooldragging: false, tool:null, items:this.state.items})
       } else {
         this.setState({tooldragging: false, tool:null})
       }
@@ -54,7 +73,8 @@ var LBCanvas = React.createClass({
     } else  if (e.action === 'tooldragging') {
       this.setState({x: e.x, y: e.y})
     } else  if (e.action === 'clearproject') {
-      this.setState({items:[]})
+      this.state.items=[]
+      this.setState({items:this.state.items})
     } else if (e.action === 'toolstartmove') {
       var tool = this.state.items[e.objid]
       var x = e.x-e.rx-pos.left
@@ -130,11 +150,17 @@ var LBCanvas = React.createClass({
       var inputobj = this.findToolByObjectId(e.fromobjid);
       var outputobj = this.findToolByObjectId(e.toobjid);
       outputobj.data = inputobj.data;
-      this.setState({items:this.state.items})
+
+      $.get("http://192.168.3.1/api/api.php?cmd=8x8&data=" + outputobj.data, function (data) {
+      });
+
+      this.setState({items:this.state.items});
     } else  if (e.action === 'lbclear') {
       var outputobj = this.findToolByObjectId(e.objid);
       outputobj.data = "0000000000000000"
-      this.setState({items:this.state.items})
+      this.setState({items:this.state.items});
+      $.get("http://192.168.3.1/api/api.php?cmd=8x8&data=" + outputobj.data, function (data) {
+      });
     } else if (e.action === 'remote') {
       var remotetool = null;
       for (var i in this.state.items) {
@@ -165,6 +191,7 @@ var LBCanvas = React.createClass({
         }
       }
     }
+    autoSaveProject('autosave',this.state.items);
   },
   componentDidMount: function() {
     this.token = AppDispatcher.register(this.handleEvents);
@@ -172,21 +199,21 @@ var LBCanvas = React.createClass({
   componentWillUnmount: function() {
     AppDispatcher.unregister(this.token)
   },
-  makeElementFromClassname: function(className,data,i,x,y) {
+  makeElementFromClassname: function(className,data,conf,i,x,y) {
     if (className == 'lb-flowstart') {
-      return (<FlowStart max={1} className={className} data={data} objid={i} x={x} y={y} />)
+      return (<FlowStart max={1} className={className} data={data} conf={conf} objid={i} x={x} y={y} />)
     } else if (className == 'lb-ledarray') {
-      return (<EightByEight max={1}  className={className} data={data} objid={i} x={x} y={y} />)
+      return (<EightByEight max={2}  className={className} data={data} conf={conf} objid={i} x={x} y={y} />)
     } else if (className == 'lb-flowend') {
-      return (<FlowEnd max={1} className={className} data={data} objid={i} x={x} y={y} />)
+      return (<FlowEnd max={1} className={className} data={data} conf={conf} objid={i} x={x} y={y} />)
     } else if (className == 'lb-controller') {
-      return (<Controller max={1} className={className} data={data} objid={i} x={x} y={y} />)
+      return (<Controller max={1} className={className} data={data} conf={conf} objid={i} x={x} y={y} />)
     } else if (className == 'lb-wheels') {
-      return (<Wheels max={1} className={className} data={data} objid={i} x={x} y={y} />)
+      return (<Wheels max={1} className={className} data={data} conf={conf} objid={i} x={x} y={y} />)
     } else if (className == 'lb-face') {
-      return (<Face max={4} className={className} data={data} objid={i} x={x} y={y} />)
+      return (<Face max={4} className={className} data={data} conf={conf} objid={i} x={x} y={y} />)
     } else if (className == 'lb-remote') {
-      return (<Remote max={4} className={className} data={data} objid={i} x={x} y={y} />)
+      return (<Remote max={4} className={className} data={data} conf={conf} objid={i} x={x} y={y} />)
     }
   },
   render: function() {
@@ -200,7 +227,7 @@ var LBCanvas = React.createClass({
     //  Draw all items on canvas
     //
     var createItem = function(i) {
-      var elem = this.makeElementFromClassname(i.className,i.data,i.uuid,i.x,i.y);
+      var elem = this.makeElementFromClassname(i.className,i.data,i.conf,i.uuid,i.x,i.y);
       var placedToolStyle = {
         position:'absolute',
         top:i.y,
@@ -240,6 +267,7 @@ var LBCanvas = React.createClass({
           return;
         }
         var closestConn = closestConnectorStyle(lbobject.x,lbobject.y,lbobject.uuid,dest.x,dest.y,l.objid);
+        if(!closestConn) return;
         var lineStyle = createNavLine(closestConn.srcStyle.left,closestConn.srcStyle.top,closestConn.destStyle.left,closestConn.destStyle.top)
         return (
           <div key={l.n+"-"+l.objid}>
@@ -272,6 +300,7 @@ var LBCanvas = React.createClass({
     }.bind(this);
     var createdItems = (<div>{this.state.items.map(createItem)}</div>);
     var createdConnections = (<div>{this.state.items.map(createConnection)}</div>);
+
     //
     //  Highlight canvas on drag entry
     //

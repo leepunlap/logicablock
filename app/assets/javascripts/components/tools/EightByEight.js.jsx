@@ -2,7 +2,7 @@
 
 var EightByEight = React.createClass({
   getInitialState: function() {
-    return {leds:leds_blank};
+    return {leds:faceDataToArray("0000000000000000")};
   },
 
   render: function() {

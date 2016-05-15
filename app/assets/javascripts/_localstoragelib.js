@@ -20,6 +20,26 @@ function deleteFace(index) {
   return faces;
 }
 
+
+
+function loadProjects() {
+  var storage = window.localStorage;
+  if (!storage.getItem("projects")) storage.setItem("projects",JSON.stringify({}));
+  var projects = JSON.parse(storage.getItem("projects"));
+
+  return projects;
+}
+
+function saveProject (name,obj) {
+  var storage = window.localStorage;
+  var projects = loadProjects();
+  projects[name] = obj;
+  storage.setItem("projects",JSON.stringify(projects));
+}
+
+var autoSaveProject = _.debounce(saveProject,500);
+
+
 function faceDataToArray(str) {
   var result = [];
   while (str.length >= 2) {
@@ -41,7 +61,7 @@ function faceArrayToData (arr) {
   var data = arr.map(function (row) {
     var b = 0x00;
     for (var i in row) {
-      var v = row[i];
+      var v = row[7-i];
       b = b << 1;
       b += v;
       //console.log("i:" + v + ", b:" + b);
@@ -53,17 +73,6 @@ function faceArrayToData (arr) {
   });
   return hs;
 }
-
-var leds_blank = [
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0],
-  [0, 0, 0, 0, 0, 0, 0, 0]
-];
 
 var leds_smiley = [
   [0, 0, 0, 0, 0, 0, 0, 0],

@@ -3,7 +3,7 @@
 var Face;
 Face = React.createClass({
   getInitialState: function () {
-    var leds = leds_blank
+    var leds = faceDataToArray("0000000000000000");
     if (this.props.isInToolbox) {
       leds = leds_smiley;;
     }
@@ -40,8 +40,6 @@ Face = React.createClass({
       objid:this.props.objid,
       face:this.state.faces[e.target.id]
     })
-    $.get("http://192.168.3.1/api/api.php?cmd=8x8&data=" + this.state.faces[e.target.id], function (data) {
-    });
   },
   onDeleteSavedFace: function(e) {
     this.setState({faces:deleteFace(e.target.id)})
