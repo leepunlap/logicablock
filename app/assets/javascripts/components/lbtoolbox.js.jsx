@@ -20,7 +20,7 @@ var LBToolbox = React.createClass({
   },
   handleEvents: function(e) {
     if (e.action === 'selecttool') {
-      this.setState({objid: e.objid, editclassname:e.className})
+      this.setState({objid: e.objid, editclassname:e.className, data:e.data, conf:e.conf})
     } else if (e.action === 'unselecttool' || e.action === 'deletetool') {
       this.setState({objid: null, editclassname:null})
     }
@@ -58,13 +58,14 @@ var LBToolbox = React.createClass({
     }
   },
   render: function() {
+
     if (this.state.objid) {
       if (this.state.editclassname == 'lb-face') {
-        var toolscontrol = <Face isEditing={true} objid={this.state.objid} />
+        var toolscontrol = <Face isEditing={true} objid={this.state.objid} data={this.state.data} conf={this.state.conf} />
       } else if (this.state.editclassname == 'lb-controller') {
         var toolscontrol = <Controller isEditing={true} objid={this.state.objid} />
       } else if (this.state.editclassname == 'lb-ledarray') {
-        var toolscontrol = <EightByEight isEditing={true} objid={this.state.objid} />
+        var toolscontrol = <EightByEight isEditing={true} objid={this.state.objid} data={this.state.data} conf={this.state.conf} />
       } else if (this.state.editclassname == 'lb-remote') {
         var toolscontrol = <Remote siohost={this.props.siohost} isEditing={true} objid={this.state.objid} />
       }else {
@@ -81,12 +82,22 @@ var LBToolbox = React.createClass({
     } else {
       var tools = (
         <div className="toolContainer">
-          <EightByEight isInToolbox={true} />
-          <Controller isInToolbox={true} />
-          <Face isInToolbox={true} />
-          <Remote isInToolbox={true} />
-          <Wheels isInToolbox={true} />
-          
+          <table className="toolTable">
+            <tbody>
+            <tr>
+              <td><EightByEight isInToolbox={true} /></td>
+              <td><Controller isInToolbox={true} /></td>
+            </tr>
+            <tr>
+              <td><Face isInToolbox={true} /></td>
+              <td><Wheels isInToolbox={true} /></td>
+            </tr>
+            <tr>
+              <td><Remote isInToolbox={true} /></td>
+              <td></td>
+            </tr>
+            </tbody>
+          </table>
           <button className="btn btn-success" onClick={this.onClear}>Clear</button>
           <button className="btn btn-success" onClick={this.onRun}>Run</button>
           <button className="btn btn-success" onClick={this.onStop}>Stop</button>

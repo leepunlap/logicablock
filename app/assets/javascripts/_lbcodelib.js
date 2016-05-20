@@ -11,6 +11,7 @@ function savelbcode() {
   this.element.id = "lbscript";
   this.element.innerHTML = document.getElementById("view").innerText;
   document.getElementsByTagName("HEAD")[0].appendChild(this.element);
+  $('#showcode').modal('hide')
 }
 
 function lbMsg(title,msg) {

@@ -4,11 +4,15 @@ var Face;
 Face = React.createClass({
   getInitialState: function () {
     var leds = faceDataToArray("0000000000000000");
+    if (this.props.data && typeof (this.props.data) !== 'undefined') {
+      leds = faceDataToArray(this.props.data);
+    }
     if (this.props.isInToolbox) {
       leds = leds_smiley;;
     }
     return {
       leds: leds,
+      propsdata: this.props.data,
       faces: getFaces()
     };
   },
@@ -113,7 +117,19 @@ Face = React.createClass({
       );
     }.bind(this);
     var className = "lb-face";
+
+
+
     if (this.props.isEditing) {
+      console.log(this.props.data)
+      console.log(this.state.propsdata)
+      if (this.props.data && typeof (this.props.data) !== 'undefined' && this.props.data  !== this.state.propsdata) {
+        console.log("BANG")
+        this.state.leds = faceDataToArray(this.props.data);
+        this.state.propsdata = this.props.data;
+      }
+
+
       return (
         <div>
           <h4>Create New Face</h4>
@@ -127,12 +143,13 @@ Face = React.createClass({
         </div>
       );
     }
+
     var leds = this.state.leds;
     if (this.props.data && typeof (this.props.data) !== 'undefined') {
       leds = faceDataToArray(this.props.data);
     }
     return (
-      <LBComponent toolName="Face" objid={this.props.objid} isInToolbox={this.props.isInToolbox}
+      <LBComponent toolName="Face" objid={this.props.objid} conf={this.props.conf} data={this.props.data} isInToolbox={this.props.isInToolbox}
                    isEditing={this.props.isEditing}>
         <div className={className}>
           {leds.map(ledRow)}

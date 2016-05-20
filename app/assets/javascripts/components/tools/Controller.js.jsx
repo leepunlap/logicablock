@@ -3,16 +3,20 @@
 var Controller = React.createClass({
   getInitialState: function() {
     return {inputs:[
-        {n:'i1',x:5,y:10},
-        {n:'i2',x:5,y:30},
-        {n:'i3',x:5,y:50},
-        {n:'i4',x:5,y:70},
+        {n:'i1'},
+        {n:'i2'},
+        {n:'i3'},
+        {n:'i4'},
+        {n:'i5'},
+        {n:'i6'},
+        {n:'i7'},
+        {n:'i8'},
       ],
       outputs:[
-        {n:'o1',x:155,y:10},
-        {n:'o2',x:155,y:30},
-        {n:'o3',x:155,y:50},
-        {n:'o4',x:155,y:70},
+        {n:'o1'},
+        {n:'o2'},
+        {n:'o3'},
+        {n:'o4'},
       ]
     };
   },
@@ -22,28 +26,6 @@ var Controller = React.createClass({
   render: function() {
     var that = this;
     var objid = this.props.objid;
-    var inputConnectors = function(i) {
-      var connectorStyle = {
-        left:i.x,
-        top:i.y
-      }
-      return(
-        <div className="lb-connector" style={connectorStyle} key={i.n}>
-        {i.n}
-        </div>
-      );
-    };
-    var outputConnectors = function(i) {
-      var connectorStyle = {
-        left:i.x,
-        top:i.y
-      }
-      return(
-        <div className="lb-connector" style={connectorStyle} key={i.n}>
-        {i.n}
-        </div>
-      );
-    };
     var inputConnectorProps = function(i) {
       return(
         <LBDragSource key={i.n} name={i.n} id={objid+"|input|"+i.n}></LBDragSource>
@@ -69,9 +51,7 @@ var Controller = React.createClass({
     return (
       <LBComponent toolName="Controller" objid={this.props.objid} isInToolbox={this.props.isInToolbox} isEditing={this.props.isEditing}>
         <div className="lb-controller">
-          <img className="toolImage" src="/images/brain.jpg" />
-          {this.state.inputs.map(inputConnectors)}
-          {this.state.outputs.map(outputConnectors)}
+          <img className="controlImage" src="/images/brain.jpg" />
           {propPage}
         </div>
       </LBComponent>

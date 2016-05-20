@@ -23,7 +23,7 @@ var LBCanvas = React.createClass({
     }
     return null;
   },
-  selectTool: function(objid,className) {
+  selectTool: function(objid,className,data,conf) {
     if (this.state.selectedTool === objid) {
       this.setState({selectedTool:null})
       _.delay(function(e) {
@@ -38,9 +38,11 @@ var LBCanvas = React.createClass({
         AppDispatcher.dispatch({
           action:'selecttool',
           className:className,
-          objid:objid
+          objid:objid,
+          data:data,
+          conf:conf
         })
-      },20,objid)
+      },20,objid,data,conf)
     }
   },
   handleEvents: function(e) {
@@ -84,12 +86,14 @@ var LBCanvas = React.createClass({
       var vx = this.state.ox - this.state.x
       var vy = this.state.oy - this.state.y
       if (Math.abs(vy) < 10 && Math.abs(vx) < 10) {
-        this.selectTool(e.objid,e.className);
+        this.selectTool(e.objid,e.className,e.data,e.conf);
       }
     } else if (e.action === 'moveexistingtool') {
       var tool = this.findToolByObjectId(e.objid)
-      tool.x = e.x-this.state.rx-pos.left+canvas.scrollLeft();
-      tool.y = e.y-this.state.ry-pos.top+canvas.scrollTop();
+      var x = e.x-this.state.rx-pos.left+canvas.scrollLeft();
+      var y = e.y-this.state.ry-pos.top+canvas.scrollTop();
+      tool.x = x > 0 ? x : 0;
+      tool.y = y > 0 ? y : 0;
       this.setState({items:this.state.items, x:tool.x, y:tool.y})
     } else if (e.action === 'dragstart') {
       var toks = e.objid.split('|');
@@ -151,44 +155,57 @@ var LBCanvas = React.createClass({
       var outputobj = this.findToolByObjectId(e.toobjid);
       outputobj.data = inputobj.data;
 
-      $.get("http://192.168.3.1/api/api.php?cmd=8x8&data=" + outputobj.data, function (data) {
-      });
+      var url = "http://"+outputobj.conf.ipaddr+":8080/api.php?cmd=8x8&data=" + outputobj.data;
+      console.log(url)
+
+      // $.get(url, function (data) {
+      // });
 
       this.setState({items:this.state.items});
     } else  if (e.action === 'lbclear') {
       var outputobj = this.findToolByObjectId(e.objid);
       outputobj.data = "0000000000000000"
       this.setState({items:this.state.items});
-      $.get("http://192.168.3.1/api/api.php?cmd=8x8&data=" + outputobj.data, function (data) {
-      });
+
+      var url = "http://"+outputobj.conf.ipaddr+":8080/api.php?cmd=8x8&data=" + outputobj.data;
+      console.log(url)
+      // $.get(url, function (data) {
+      // });
+
+    } else if (e.action === 'sendconfig') {
+      var outputobj = this.findToolByObjectId(e.objid);
+      outputobj.conf = e.config;
+      this.setState({items:this.state.items})
     } else if (e.action === 'remote') {
+
+
       var remotetool = null;
       for (var i in this.state.items) {
         var tool = this.state.items[i]
         if (tool.className === 'lb-remote' && tool.uuid == e.objid) {
           remotetool = tool;
         }
-        if (remotetool) {
-          if (this.state.selectedTool) {
-            var selectedTool = this.state.selectedTool;
-            this.setState({selectedTool:null})
-            _.delay(function() {
-              AppDispatcher.dispatch({
-                action:'unselecttool',
-                objid:selectedTool
-              })
-            },20)
-          }
-          remotetool.data = 1;
-          this.setState({items:this.state.items})
-          setTimeout(function() {
-            remotetool.data = 0;
-            this.setState({items:this.state.items})
-          }.bind(this),250)
+      }
+      if (remotetool) {
+        if (this.state.selectedTool) {
+          var selectedTool = this.state.selectedTool;
+          this.setState({selectedTool:null})
           _.delay(function() {
-            lbRemoteButtonPressed (remotetool.uuid, e.button)
+            AppDispatcher.dispatch({
+              action:'unselecttool',
+              objid:selectedTool
+            })
           },20)
         }
+        remotetool.data = 1;
+        this.setState({items:this.state.items})
+        setTimeout(function() {
+          remotetool.data = 0;
+          this.setState({items:this.state.items})
+        }.bind(this),250)
+        _.delay(function() {
+          lbRemoteButtonPressed (remotetool.uuid, e.button)
+        },20)
       }
     }
     autoSaveProject('autosave',this.state.items);

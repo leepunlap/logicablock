@@ -95,8 +95,10 @@ var LBSubComponent = React.createClass({
       AppDispatcher.dispatch({
         action:'toolstopmove',
         objid:this.props.objid,
-        className:this.props.children.props.className
-      }) 
+        className:this.props.children.props.className,
+        data:this.props.data,
+        conf:this.props.conf
+      })
     }
     e.stopPropagation();
     e.preventDefault();
@@ -165,19 +167,23 @@ var LBComponent = React.createClass({
     //
     //  Display header only if tool is inside toolbox, otherwise just display the tool itself
     //
+    var toolWrapperClass = "lbtoolplaceholder";
     if (this.props.isInToolbox) {
+      toolWrapperClass = "lbtoolwrapper";
         var headerPart = (
             <h4 className="toollabel">{this.props.toolName}</h4>
         );
         var footerPart = (
-            <hr />
+          <div className="toolFooter"></div>
         )
     }
     return (
-      <div className="lbtoolwrapper">
+      <div className={toolWrapperClass}>
+        <center>
         {headerPart}
-        <LBSubComponent objid={this.props.objid} children={this.props.children} isInToolbox={this.props.isInToolbox} isEditing={this.props.isEditing}/>
+        <LBSubComponent objid={this.props.objid} data={this.props.data} conf={this.props.conf} children={this.props.children} isInToolbox={this.props.isInToolbox} isEditing={this.props.isEditing}/>
         {footerPart}
+        </center>
       </div>
     );
   }

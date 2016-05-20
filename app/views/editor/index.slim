@@ -8,8 +8,7 @@
         .modal-body
           = react_component 'LBCodeEditor', {}
         .modal-footer
-          button.btn.btn-default#confirm-dialog-button-left type="button" onClick="savelbcode()" Save
-          button.btn.btn-primary#confirm-dialog-button-right type="button" data-dismiss="modal" class="" Close
+          button.btn.btn-primary#confirm-dialog-button-right type="button" onClick="savelbcode()" Save and Close
 
 .modal.fade#showmsg tabindex="-1" role="dialog" aria-labelledby="myMsg" aria-hidden="true"
   .modal_wrapper
@@ -23,14 +22,14 @@
           button.btn.btn-primary#confirm-dialog-button-right type="button" data-dismiss="modal" class="" Close
 
 .row.fullheight
-  .col-xs-3.lbtoolbox.fullinnerheight
+  .lbtoolboxpanel.fullinnerheight
     .panel.panel-logica.fullinnerheight
       .panel-heading
         | Toolbox
       .panel-body.canvas#lbtoolbox
         = react_component 'LBToolbox', {siohost:"http://#{request.host}:3001"}, {prerender: false, class: 'lbtoolbox'}
 
-  .col-xs-9.fullinnerheight
+  .lbcanvaspanel.fullinnerheight
     .panel.panel-logica.fullinnerheight
       .panel-heading.panel-heading2
         | Canvas
