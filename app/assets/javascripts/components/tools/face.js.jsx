@@ -121,14 +121,11 @@ Face = React.createClass({
 
 
     if (this.props.isEditing) {
-      console.log(this.props.data)
-      console.log(this.state.propsdata)
       if (this.props.data && typeof (this.props.data) !== 'undefined' && this.props.data  !== this.state.propsdata) {
         console.log("BANG")
         this.state.leds = faceDataToArray(this.props.data);
         this.state.propsdata = this.props.data;
       }
-
 
       return (
         <div>

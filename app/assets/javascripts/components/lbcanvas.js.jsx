@@ -154,31 +154,28 @@ var LBCanvas = React.createClass({
       var inputobj = this.findToolByObjectId(e.fromobjid);
       var outputobj = this.findToolByObjectId(e.toobjid);
       outputobj.data = inputobj.data;
-
-      var url = "http://"+outputobj.conf.ipaddr+":8080/api.php?cmd=8x8&data=" + outputobj.data;
-      console.log(url)
-
-      // $.get(url, function (data) {
-      // });
-
+      if (outputobj.conf) {
+        var url = "http://"+outputobj.conf.ipaddr+":8080/api.php?cmd=8x8&data=" + outputobj.data;
+        console.log(url)
+        $.get(url, function (data) {
+        });
+      }
       this.setState({items:this.state.items});
     } else  if (e.action === 'lbclear') {
       var outputobj = this.findToolByObjectId(e.objid);
       outputobj.data = "0000000000000000"
       this.setState({items:this.state.items});
-
-      var url = "http://"+outputobj.conf.ipaddr+":8080/api.php?cmd=8x8&data=" + outputobj.data;
-      console.log(url)
-      // $.get(url, function (data) {
-      // });
-
+      if (outputobj.conf) {
+        var url = "http://"+outputobj.conf.ipaddr+":8080/api.php?cmd=8x8&data=" + outputobj.data;
+        console.log(url)
+        $.get(url, function (data) {
+        });
+      }
     } else if (e.action === 'sendconfig') {
       var outputobj = this.findToolByObjectId(e.objid);
       outputobj.conf = e.config;
       this.setState({items:this.state.items})
     } else if (e.action === 'remote') {
-
-
       var remotetool = null;
       for (var i in this.state.items) {
         var tool = this.state.items[i]
