@@ -17,7 +17,6 @@
 /tmp
 node_modules
 .keep
-bin
 Gemfile.lock
 .idea
 test
