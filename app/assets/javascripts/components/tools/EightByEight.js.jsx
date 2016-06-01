@@ -58,7 +58,7 @@ var EightByEight = React.createClass({
           </div>
           <h4>IP Address</h4>
           <input id="lb_ipaddress" onChange={this.onTextChange} type="text" className="form-control" placeholder="IP Address" defaultValue={ip} />
-          <button className="btn btn-default btn-xs" onClick={this.onSaved}>Save</button>
+          <button className="btn btn-default" onClick={this.onSaved}>Save</button>
         </div>
       );
     }

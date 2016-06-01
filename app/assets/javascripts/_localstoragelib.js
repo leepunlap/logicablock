@@ -1,3 +1,13 @@
+function getConfig() {
+  var storage = window.localStorage;
+  if (!storage.getItem("config")) storage.setItem("config",JSON.stringify({group:"perdoco",username:"guest",avatar:data_smiley}));
+  return JSON.parse(storage.getItem("config"));
+}
+function storeConfig(config) {
+  var storage = window.localStorage;
+  storage.setItem("config",JSON.stringify(config));
+}
+
 function getFaces() {
   var storage = window.localStorage;
   if (!storage.getItem("faces")) storage.setItem("faces",JSON.stringify([]));
@@ -41,6 +51,9 @@ var autoSaveProject = _.debounce(saveProject,500);
 
 
 function faceDataToArray(str) {
+  if(typeof(str) == 'undefined') {
+    str = data_smiley;
+  }
   var result = [];
   while (str.length >= 2) {
     var byte = parseInt(str.substring(0, 2), 16)
@@ -84,3 +97,5 @@ var leds_smiley = [
   [0, 0, 1, 1, 1, 1, 0, 0],
   [0, 0, 0, 0, 0, 0, 0, 0]
 ];
+
+var data_smiley = '0066660081423c00';

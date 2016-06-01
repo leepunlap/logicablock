@@ -2,7 +2,11 @@
 
 var LBToolbox = React.createClass({
   getInitialState: function() {
-    return {};
+    var config = getConfig();
+    return {
+      config: config,
+      avatar: faceDataToArray(config.avatar)
+    };
   },
   deviceOrientationChanged: function(e) {
     this.setState({alpha: e.alpha});
@@ -18,11 +22,19 @@ var LBToolbox = React.createClass({
       action:'clearproject'
     })
   },
+  itemClick: function (r, c) {
+    if (this.state.avatar[r][c] == 0) {
+      this.state.avatar[r][c] = 1;
+    } else {
+      this.state.avatar[r][c] = 0;
+    }
+    this.setState({avatar: this.state.avatar});
+  },
   handleEvents: function(e) {
     if (e.action === 'selecttool') {
       this.setState({objid: e.objid, editclassname:e.className, data:e.data, conf:e.conf})
     } else if (e.action === 'unselecttool' || e.action === 'deletetool') {
-      this.setState({objid: null, editclassname:null})
+      this.setState({objid: null, editclassname:null, editid: null})
     }
   },
   componentDidMount: function() {
@@ -57,9 +69,69 @@ var LBToolbox = React.createClass({
       lbStop();
     }
   },
+  onEditID: function(e){
+    this.setState({editplayer: true})
+  },
+  onEditIDCancel: function(e){
+    this.setState({editplayer: false})
+  },
+  onEditIDSave: function(e){
+    var config = {
+      group:$('#lb_groupname')[0].value,
+      username:$('#lb_username')[0].value,
+      avatar:faceArrayToData(this.state.avatar)
+    };
+    this.setState({editplayer: false, config:config});
+    config.mode = 'student';
+    socket.emit('register', config);
+    storeConfig(config);
+  },
   render: function() {
 
-    if (this.state.objid) {
+    if (this.state.editplayer) {
+      var r = -1;
+      var c = -1;
+      var ledEditCol = function (col) {
+        if (col > 0) {
+          var ledStyle = {
+            backgroundColor: 'red',
+            border: '1px solid red'
+          };
+        } else {
+          var ledStyle = {
+            border: 'solid 1px #ddd',
+            backgroundColor: '#fff',
+            boxShadow: '1px 1px 1px #ddd'
+          };
+        }
+        return (
+          <div className="lb-led-edit" style={ledStyle} key={c++} onClick={this.itemClick.bind(this,r,c)}></div>
+        );
+      }.bind(this);
+      var ledEditRow = function (row) {
+        c = -1;
+        return (
+          <div className="lb-ledrow" key={r++}>
+            {row.map(ledEditCol)}
+          </div>
+        );
+      };
+      return (
+        <div className="toolContainer">
+          <h2>Player Config</h2>
+          <h4>Avatar</h4>
+          <div>
+            {this.state.avatar.map(ledEditRow)}
+          </div>
+          <h4>Group Name</h4>
+          <input id="lb_groupname" type="text" className="form-control" placeholder="Group Name" defaultValue={this.state.config.group} />
+          <h4>PlayerName</h4>
+          <input id="lb_username" type="text" className="form-control" placeholder="Player Name" defaultValue={this.state.config.username} />
+          <button className="btn btn-danger" onClick={this.onEditIDCancel}>Cancel</button>
+          <button className="btn btn-success" onClick={this.onEditIDSave}>Save</button>
+        </div>
+      )
+    } else if (this.state.objid) {
       if (this.state.editclassname == 'lb-face') {
         var toolscontrol = <Face isEditing={true} objid={this.state.objid} data={this.state.data} conf={this.state.conf} />
       } else if (this.state.editclassname == 'lb-controller') {
@@ -71,7 +143,7 @@ var LBToolbox = React.createClass({
       }else {
         var toolscontrol = <p>Coming Soon</p>
       }
-      var tools = (
+      return (
         <div className="toolContainer">
           <h2>{this.state.editclassname}</h2>
           {toolscontrol}
@@ -80,7 +152,7 @@ var LBToolbox = React.createClass({
         </div>
       )
     } else {
-      var tools = (
+      return (
         <div className="toolContainer">
           <table className="toolTable">
             <tbody>
@@ -98,16 +170,22 @@ var LBToolbox = React.createClass({
             </tr>
             </tbody>
           </table>
-          <button className="btn btn-success" onClick={this.onClear}>Clear</button>
-          <button className="btn btn-success" onClick={this.onRun}>Run</button>
-          <button className="btn btn-success" onClick={this.onStop}>Stop</button>
+          <button className="btn btn-default" onClick={this.onEditID}>
+            <span className="glyphicon glyphicon-user" aria-hidden="true"></span> ID
+          </button>
+          <button className="btn btn-default" onClick={this.onClear}>>
+            <span className="glyphicon glyphicon-erase" aria-hidden="true"></span> Clear
+          </button>
+          <button className="btn btn-default" onClick={this.onRun}>
+            <span className="glyphicon glyphicon-play" aria-hidden="true"></span> Run
+          </button>
+          <button className="btn btn-default" onClick={this.onStop}>
+            <span className="glyphicon glyphicon-stop" aria-hidden="true"></span> Stop
+          </button>
         </div>
       )
     }
-    return (
-      <div>
-        {tools}
-      </div>
-    );
+
+
   }
 });

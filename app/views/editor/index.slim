@@ -35,3 +35,12 @@
         | Canvas
       .panel-body.canvas#lbcanvas
         = react_component 'LBCanvas', {}, {prerender: false, class: 'lbcanvas'}
+
+javascript:
+  $(document).ready(function () {
+    socket.on('connect', function (data) {
+      var config = getConfig();
+      config.mode = 'student';
+      socket.emit('register', config);
+    });
+  });

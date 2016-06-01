@@ -1,7 +1,7 @@
 doctype html
 html
 	head
-		title Test
+		title Perdoco 0.85
         link href="/favicon.ico" type="image/x-icon"
 		meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"
 		meta name="msapplication-tap-highlight" content="no"
@@ -13,11 +13,7 @@ html
 
 javascript:
   var socket = io.connect("http://#{request.host}:3001");
-  socket.on('msg', function (data) {
-    console.log(data);
-    socket.emit('msg', {my: 'data'});
-  });
-  socket.on('remote', function (data) {
+  socket.off('remote').on('remote', function (data) {
     AppDispatcher.dispatch({
       action: 'remote',
       button: data.button,

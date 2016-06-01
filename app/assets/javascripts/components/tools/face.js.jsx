@@ -1,5 +1,46 @@
 /* global AppDispatcher, React, ReactDOM */
 
+var SmallFace = React.createClass({
+  getInitialState: function () {
+    return {
+      leds: faceDataToArray(this.props.face)
+    };
+  },
+  render: function () {
+    this.state.leds = faceDataToArray(this.props.face)
+    var r = -1;
+    var c = -1;
+    var ledCol = function (col) {
+      if (col > 0) {
+        var ledStyle = {
+          backgroundColor: 'red',
+        };
+      } else {
+        var ledStyle = {
+          backgroundColor: '#fff',
+        };
+      }
+      return (
+        <div className="lb-led-xs" style={ledStyle} key={c++}></div>
+      );
+    };
+    var ledRow = function (row) {
+      c = -1;
+      return (
+        <div className="lb-ledrow-xs" key={r++}>
+          {row.map(ledCol)}
+        </div>
+      );
+    };
+    return (
+      <div className="lb-face-xs">
+        {this.state.leds.map(ledRow)}
+      </div>
+    )
+  }
+})
+
+
 var Face;
 Face = React.createClass({
   getInitialState: function () {
@@ -122,7 +163,6 @@ Face = React.createClass({
 
     if (this.props.isEditing) {
       if (this.props.data && typeof (this.props.data) !== 'undefined' && this.props.data  !== this.state.propsdata) {
-        console.log("BANG")
         this.state.leds = faceDataToArray(this.props.data);
         this.state.propsdata = this.props.data;
       }
