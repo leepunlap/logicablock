@@ -37,7 +37,6 @@ var LBTutorFingerrace = React.createClass({
     }
   },
   componentDidMount: function() {
-    this.timer = null;
     socket.off('connect').on('connect', function (data) {
       var config = getConfig();
       config.mode = 'tutor';
@@ -61,8 +60,6 @@ var LBTutorFingerrace = React.createClass({
             p.percent += score;
             if (p.percent >= 100) {
               p.percent = 100;
-              clearInterval(this.timer)
-              this.timer = null;
               this.setState({status:p.userdata.username + " won",running:false});
               var config = getConfig();
               socket.emit('game',{
@@ -89,8 +86,6 @@ var LBTutorFingerrace = React.createClass({
     this.setState({round:0,status:'started',running:true});
   },
   onReset: function() {
-    clearInterval(this.timer);
-    this.timer = null;
     var resetPercent = function(player) {
       player.percent = 0;
     };
