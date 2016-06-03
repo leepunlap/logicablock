@@ -67,11 +67,6 @@ var LBTutorFingerrace = React.createClass({
   },
   onStart: function() {
     var config = getConfig();
-    socket.emit('game',{
-      action:'start',
-      group:config.group,
-      game:'fingerrace',
-    });
     var genSimonSays = function() {
       var text = "";
       var possible = "ABCDEF";

@@ -39,12 +39,19 @@
 
 javascript:
   $(document).ready(function () {
-    socket.on('connect', function (data) {
+    socket.off('remote').on('remote', function (data) {
+      AppDispatcher.dispatch({
+        action: 'remote',
+        button: data.button,
+        objid: data.oid
+      })
+    });
+    socket.off('connect').on('connect', function (data) {
       var config = getConfig();
       config.mode = 'student';
       socket.emit('register', config);
     });
-    socket.on('game',function (data) {
+    socket.off('game').on('game',function (data) {
       lbOnGameMessage(data);
     })
   });

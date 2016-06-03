@@ -49,27 +49,7 @@ var Controller = React.createClass({
       )
     }
 
-    var gamemessage = null;
-    if (this.props.conf) {
-      if (this.props.conf.action == 'start') {
-        gamemessage = (
-          <div>
-            {this.props.conf.game} Start
-          </div>
-        )        
-      }
-      if (this.props.conf.action == 'simonsays' || this.props.conf.action == 'yousay') {
-        gamemessage = (
-          <div>
-            <h3>
-              Simon Says <font color="red">{this.props.conf.data}</font>
-              <br />
-              You Say <font color="green">{this.props.conf.yousay}</font>
-            </h3>
-          </div>
-        )
-      }
-    }
+    var gamemessage = lbcontrollergamelib.getGameControllerDisplay.bind(this)()
 
     return (
       <LBComponent toolName="Controller" objid={this.props.objid} isInToolbox={this.props.isInToolbox} isEditing={this.props.isEditing}>

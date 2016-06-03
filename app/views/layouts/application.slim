@@ -13,17 +13,4 @@ html
 
 javascript:
   var socket = io.connect("http://#{request.host}:3001");
-  socket.off('remote').on('remote', function (data) {
-    AppDispatcher.dispatch({
-      action: 'remote',
-      button: data.button,
-      objid: data.oid
-    })
-  });
-
-
-  //setInterval(function() {
-  //  console.log("hi")
-  //  socket.emit('msg', {my: 'data'});
-  //},1000)
 
