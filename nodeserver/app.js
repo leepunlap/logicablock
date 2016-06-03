@@ -35,6 +35,16 @@ io.on('connection', function(socket){
         console.log(socket.id + ' disconnected');
         io.emit('groupmembership',getPlayers());
     });
+    socket.on('game', function(data){
+        console.log(socket.id + ' game data');
+        io.emit('game',data);
+    });
+    socket.on('gamemove', function(data){
+        console.log(socket.id + ' game move');
+        data.socketid = socket.id;
+        io.emit('gamemove',data);
+    });
+
 });
 
 

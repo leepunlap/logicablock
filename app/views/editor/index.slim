@@ -17,7 +17,8 @@
         .modal-header
           button.close type="button" data-dismiss="modal" aria-hidden="true" ×
           h4.modal-title#msgtitle Error Message
-        .modal-body#msgbody
+        .modal-body.lbmsgdlg
+          #msgbody
         .modal-footer
           button.btn.btn-primary#confirm-dialog-button-right type="button" data-dismiss="modal" class="" Close
 
@@ -43,4 +44,7 @@ javascript:
       config.mode = 'student';
       socket.emit('register', config);
     });
+    socket.on('game',function (data) {
+      lbOnGameMessage(data);
+    })
   });

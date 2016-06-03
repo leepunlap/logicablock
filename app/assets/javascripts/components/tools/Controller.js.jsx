@@ -48,10 +48,34 @@ var Controller = React.createClass({
         </div>
       )
     }
+
+    var gamemessage = null;
+    if (this.props.conf) {
+      if (this.props.conf.action == 'start') {
+        gamemessage = (
+          <div>
+            {this.props.conf.game} Start
+          </div>
+        )        
+      }
+      if (this.props.conf.action == 'simonsays' || this.props.conf.action == 'yousay') {
+        gamemessage = (
+          <div>
+            <h3>
+              Simon Says <font color="red">{this.props.conf.data}</font>
+              <br />
+              You Say <font color="green">{this.props.conf.yousay}</font>
+            </h3>
+          </div>
+        )
+      }
+    }
+
     return (
       <LBComponent toolName="Controller" objid={this.props.objid} isInToolbox={this.props.isInToolbox} isEditing={this.props.isEditing}>
         <div className="lb-controller">
           <img className="controlImage" src="/images/brain.jpg" />
+          {gamemessage}
           {propPage}
         </div>
       </LBComponent>

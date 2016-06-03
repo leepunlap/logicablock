@@ -4,6 +4,9 @@ var LBTutorFingerrace = React.createClass({
 
   getInitialState: function() {
     return {
+      round:0,
+      status:'stopped',
+      simon:'',
       players: []
     }
   },
@@ -12,6 +15,7 @@ var LBTutorFingerrace = React.createClass({
     }
   },
   componentDidMount: function() {
+    this.timer = null;
     socket.off('connect').on('connect', function (data) {
       var config = getConfig();
       config.mode = 'tutor';
@@ -19,9 +23,38 @@ var LBTutorFingerrace = React.createClass({
       socket.emit('register', config);
     });
     socket.off('groupmembership').on('groupmembership', function (data) {
-      console.log("GoupMembership")
-      console.log(data)
       this.setState({players:data});
+    }.bind(this));
+    socket.off('gamemove').on('gamemove', function (data) {
+      this.state.players.map(function(p) {
+        if (p.id == data.socketid) {
+          p.userdata.yousay = data.yousay
+          if (data.yousay == this.state.simon) {
+            p.userdata.yousay += " YES!!!"
+            var timediff = new Date().getTime() - this.state.simontime;
+            var score = (10000 - timediff) / 200
+            if (typeof(p.percent) == 'undefined') {
+              p.percent = 0;
+            }
+            p.percent += score;
+            if (p.percent >= 100) {
+              p.percent = 100;
+              clearInterval(this.timer)
+              this.timer = null;
+              this.setState({status:p.userdata.username + " won"});
+              var config = getConfig();
+              socket.emit('game',{
+                action:'stop',
+                group:config.group,
+                game:'fingerrace',
+              });
+            }
+          } else {
+            p.userdata.yousay += " Bummer..."
+          }
+        }
+      }.bind(this))
+      this.setState({players:this.state.players});
     }.bind(this));
     this.token = AppDispatcher.register(this.handleEvents);
 
@@ -33,29 +66,53 @@ var LBTutorFingerrace = React.createClass({
     AppDispatcher.unregister(this.token)
   },
   onStart: function() {
-    this.timer = setInterval(function() {
-      var setPercent = function(player) {
-        if (typeof(player.percent) == 'undefined') {
-          player.percent = 0;
-        }
-        player.percent += Math.random() * 3;
-        if (player.percent >= 100) {
-          console.log("DONE")
-          player.percent = 100;
-          clearInterval(this.timer)
-        }
-      }.bind(this);
-      this.state.players.map(setPercent)
-      this.setState({players:this.state.players});
-    }.bind(this),100)
+    var config = getConfig();
+    socket.emit('game',{
+      action:'start',
+      group:config.group,
+      game:'fingerrace',
+    });
+    var genSimonSays = function() {
+      var text = "";
+      var possible = "ABCDEF";
+      for( var i=0; i < 6; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+      return text;
+    }
+    var sendSimon = function() {
+      var simon = genSimonSays();
+      this.state.round++;
+      this.setState({round:this.state.round, simon:simon, status:'round ' + this.state.round, simontime:new Date().getTime()})
+      socket.emit('game',{
+        action:'simonsays',
+        data:simon,
+        yousay:"",
+        group:config.group,
+        game:'fingerrace',
+      });
+    }.bind(this)
+    if (this.timer == null) {
+      this.timer = setInterval(function() {
+        sendSimon();
+      }.bind(this),10000)
+      sendSimon();
+    }
+
   },
   onReset: function() {
-    clearInterval(this.timer)
+    clearInterval(this.timer);
+    this.timer = null;
     var resetPercent = function(player) {
       player.percent = 0;
     };
     this.state.players.map(resetPercent)
-    this.setState({players:this.state.players});
+    this.setState({round:0,status:'stopped',players:this.state.players});
+    var config = getConfig();
+    socket.emit('game',{
+      action:'stop',
+      group:config.group,
+      game:'fingerrace',
+    });
   },
 
   render: function() {
@@ -80,7 +137,7 @@ var LBTutorFingerrace = React.createClass({
       return (
         <div className="panel panel-logica panel-race"key={player.id}>
           <div className={winnerClass}>
-            {player.userdata.username}
+            {player.userdata.username} <strong>{player.userdata.yousay}</strong>
           </div>
           <div className="panel-body panel-body-race">
             <div style={racePosStyle}>
@@ -95,6 +152,7 @@ var LBTutorFingerrace = React.createClass({
         <div className="col-md-2">
           <button className="btn btn-success" onClick={this.onStart}>Start</button>
           <button className="btn btn-danger" onClick={this.onReset}>Reset</button>
+          <h2>{this.state.status}</h2>
         </div>
         <div className="col-md-10">
           {this.state.players.map(showPlayer)}

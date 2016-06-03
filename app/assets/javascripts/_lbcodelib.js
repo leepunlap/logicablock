@@ -110,6 +110,54 @@ function lbStopTimer() {
   lbinternaltimer = null;
 }
 
+var lb_yousay = "";
+function lbYouSayReset() {
+  lb_yousay = "";
+  lbYouSay("");
+}
+
+function lbOnGameMessage(msg) {
+  if (!lbcontroller) {
+    lbMsg("No Controller","Drag controller onto canvas to create one");
+    return;
+  }
+  if (msg.action == "simonsays") {
+    lbYouSayReset();
+  }
+  AppDispatcher.dispatch({
+    action:'lbgamemessage',
+    objid:lbcontroller.uuid,
+    message:msg
+  })
+}
+
+function lbSendGameMove(move) {
+  console.log('move' + move)
+  var config = getConfig();
+  socket.emit('gamemove',{
+    action:'yousay',
+    yousay:move,
+    username:config.username,
+    group:config.group,
+    game:'fingerrace',
+  });
+}
+
+
+
+function lbYouSay(char) {
+  lb_yousay = lb_yousay + char;
+  AppDispatcher.dispatch({
+    action:'lbgamemessage',
+    objid:lbcontroller.uuid,
+    message:{
+      action:"yousay",
+      yousay:lb_yousay
+    }
+  })
+  return lb_yousay;
+}
+
 window.onerror = function myErrorHandler(errorMsg, url, lineNumber) {
   lbMsg("Error occured: ", errorMsg);//or any message
   return false;
