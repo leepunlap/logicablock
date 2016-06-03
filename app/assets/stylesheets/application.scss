@@ -267,10 +267,8 @@ hr {
   line-height:0px;
 }
 .lb-face-xs {
-  position:absolute;
   line-height:0px;
   width:auto;
-  border:1px solid gray
 }
 .lb-led {
   background-color:#ccc;
@@ -431,3 +429,7 @@ hr {
 #msgbody {
   font-size:24px;
 }
+
+#cssclock { zoom:60%; background-color: white; width:270px; border-radius:20px; padding:10px;}
+#clockanalog { background: url("/images/clock/analog.gif") no-repeat 0 0; height: 250px; margin: 0; overflow: hidden; position: relative; width: 250px; }
+#clockanalog img { border: 0; left: 0px; position: absolute; top: 0px;  }

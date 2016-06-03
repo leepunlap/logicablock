@@ -32,8 +32,11 @@ var SmallFace = React.createClass({
         </div>
       );
     };
+    var xsfacestyle = {
+      position:this.props.position
+    }
     return (
-      <div className="lb-face-xs">
+      <div className="lb-face-xs" style={xsfacestyle} >
         {this.state.leds.map(ledRow)}
       </div>
     )

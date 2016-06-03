@@ -6,12 +6,34 @@ var LBTutorFingerrace = React.createClass({
     return {
       round:0,
       status:'stopped',
+      running:false,
       simon:'',
       players: []
     }
   },
+  sendSimon: function() {
+    var config = getConfig();
+    var genSimonSays = function() {
+      var text = "";
+      var possible = "ABCDEF";
+      for( var i=0; i < 6; i++ )
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+      return text;
+    }
+    var simon = genSimonSays();
+    this.state.round++;
+    this.setState({round:this.state.round, simon:simon, status:'round ' + this.state.round, simontime:new Date().getTime()})
+    socket.emit('game',{
+      action:'simonsays',
+      data:simon,
+      yousay:"",
+      group:config.group,
+      game:'fingerrace',
+    });
+  },
   handleEvents: function(e) {
-    if (e.action === 'selecttool') {
+    if (e.action === 'round') {
+      this.sendSimon();
     }
   },
   componentDidMount: function() {
@@ -41,7 +63,7 @@ var LBTutorFingerrace = React.createClass({
               p.percent = 100;
               clearInterval(this.timer)
               this.timer = null;
-              this.setState({status:p.userdata.username + " won"});
+              this.setState({status:p.userdata.username + " won",running:false});
               var config = getConfig();
               socket.emit('game',{
                 action:'stop',
@@ -57,8 +79,6 @@ var LBTutorFingerrace = React.createClass({
       this.setState({players:this.state.players});
     }.bind(this));
     this.token = AppDispatcher.register(this.handleEvents);
-
-
   },
   componentWillUnmount: function() {
     socket.off('connect');
@@ -66,33 +86,7 @@ var LBTutorFingerrace = React.createClass({
     AppDispatcher.unregister(this.token)
   },
   onStart: function() {
-    var config = getConfig();
-    var genSimonSays = function() {
-      var text = "";
-      var possible = "ABCDEF";
-      for( var i=0; i < 6; i++ )
-        text += possible.charAt(Math.floor(Math.random() * possible.length));
-      return text;
-    }
-    var sendSimon = function() {
-      var simon = genSimonSays();
-      this.state.round++;
-      this.setState({round:this.state.round, simon:simon, status:'round ' + this.state.round, simontime:new Date().getTime()})
-      socket.emit('game',{
-        action:'simonsays',
-        data:simon,
-        yousay:"",
-        group:config.group,
-        game:'fingerrace',
-      });
-    }.bind(this)
-    if (this.timer == null) {
-      this.timer = setInterval(function() {
-        sendSimon();
-      }.bind(this),10000)
-      sendSimon();
-    }
-
+    this.setState({round:0,status:'started',running:true});
   },
   onReset: function() {
     clearInterval(this.timer);
@@ -101,7 +95,7 @@ var LBTutorFingerrace = React.createClass({
       player.percent = 0;
     };
     this.state.players.map(resetPercent)
-    this.setState({round:0,status:'stopped',players:this.state.players});
+    this.setState({round:0,status:'stopped',players:this.state.players,running:false});
     var config = getConfig();
     socket.emit('game',{
       action:'stop',
@@ -136,20 +130,35 @@ var LBTutorFingerrace = React.createClass({
           </div>
           <div className="panel-body panel-body-race">
             <div style={racePosStyle}>
-              <SmallFace face={player.userdata.avatar} />
+              <SmallFace position="absolute" face={player.userdata.avatar} />
             </div>
           </div>
         </div>
       );
     };
+
+    if (typeof(winner) !== 'undefined' && winner != -1 && !this.state.running) {
+      var winneravatar = (
+        <SmallFace face={winner.userdata.avatar} />
+      )
+    }
     return (
-      <div className="row fullheight">
-        <div className="col-md-2">
-          <button className="btn btn-success" onClick={this.onStart}>Start</button>
-          <button className="btn btn-danger" onClick={this.onReset}>Reset</button>
-          <h2>{this.state.status}</h2>
+      <div className="row fullheight" style={{color:'white'}}>
+        <div className="col-md-3">
+          <center>
+            <h2>Finger Race</h2>
+            <img src="/images/games/fingerrace.jpg"/>
+            <hr noshade />
+            <Clock running={this.state.running} />
+            <button className="btn btn-success" onClick={this.onStart}>Start</button>
+            <button className="btn btn-danger" onClick={this.onReset}>Reset</button>
+            <h2>{this.state.status}</h2>
+            <div style={{zoom:'200%'}}>
+              {winneravatar}
+            </div>
+          </center>
         </div>
-        <div className="col-md-10">
+        <div className="col-md-9">
           {this.state.players.map(showPlayer)}
         </div>
       </div>
