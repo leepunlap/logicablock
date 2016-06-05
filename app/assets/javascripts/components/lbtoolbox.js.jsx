@@ -166,7 +166,7 @@ var LBToolbox = React.createClass({
             </tr>
             <tr>
               <td><Remote isInToolbox={true} /></td>
-              <td></td>
+              <td><Hex isInToolbox={true} /></td>
             </tr>
             </tbody>
           </table>

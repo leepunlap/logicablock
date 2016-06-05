@@ -96,6 +96,7 @@ var LBSubComponent = React.createClass({
         action:'toolstopmove',
         objid:this.props.objid,
         className:this.props.children.props.className,
+        isGadget:this.props.isGadget,
         data:this.props.data,
         conf:this.props.conf
       })
@@ -140,17 +141,17 @@ var LBSubComponent = React.createClass({
     //
     if (this.props.isEditing) {
       return (
-        <div className={classes}>
+        <div className={classes} isGadget={this.props.isGadget}>
           {this.props.children}
         </div>
       );
     } else {
       var classes = classNames( 'react-draggable', { //this.props.children.props.className ||
-        'react-draggable-dragging': this.state.dragging,
-        'react-draggable-dragged': this.state.dragged
+        'react-draggable-dragging': this.state.dragging && !this.props.isGadget,
+        'react-draggable-dragged': this.state.dragged || this.props.isGadget
       });
       return (
-        <div className={classes}  onMouseDown={this.onMouseDown} onTouchStart={this.onMouseDown}>
+        <div className={classes} isGadget={this.props.isGadget} onMouseDown={this.onMouseDown} onTouchStart={this.onMouseDown}>
           {this.props.children}
         </div>
       );
@@ -181,7 +182,7 @@ var LBComponent = React.createClass({
       <div className={toolWrapperClass}>
         <center>
         {headerPart}
-        <LBSubComponent objid={this.props.objid} data={this.props.data} conf={this.props.conf} children={this.props.children} isInToolbox={this.props.isInToolbox} isEditing={this.props.isEditing}/>
+        <LBSubComponent isGadget={this.props.isGadget} objid={this.props.objid} data={this.props.data} conf={this.props.conf} children={this.props.children} isInToolbox={this.props.isInToolbox} isEditing={this.props.isEditing}/>
         {footerPart}
         </center>
       </div>

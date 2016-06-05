@@ -1,5 +1,58 @@
 /* global AppDispatcher, React, ReactDOM */
 
+try {
+  var ac = new AudioContext() || WebkitAudioContext() || MozAudioContext(),
+    recorderNode = ac.createGain();
+  recorderNode.gain.value = 0.7;
+}
+
+catch (e) {
+  alert("This app doesn't seem to be availible for your browser. Sorry about that. We recommend Firefox or Chrome")
+}
+
+function Sound(path) {
+  var drum = this;
+  drum.buffer = null;
+  drum.path = path;
+  var request = new XMLHttpRequest();
+  request.open('GET', drum.path, true);
+  request.responseType = 'arraybuffer';
+  request.onload = function() {
+    ac.decodeAudioData(request.response, function(buffer) {
+      drum.buffer = buffer;
+    });
+  };
+  request.send();
+}
+
+Sound.prototype.play = function() {
+  var gain = ac.createGain();
+  gain.gain.value = 1;
+  var playSound = ac.createBufferSource();
+  playSound.playbackRate.value = 1;
+  playSound.buffer = this.buffer;
+  playSound.connect(gain);
+  gain.connect(recorderNode);
+  gain.connect(ac.destination);
+  playSound.start(0);
+};
+
+var audio = {
+  clap: new Sound("/audio/clap.wav"),
+  closed: new Sound("/audio/closed.wav"),
+  crash: new Sound("/audio/crash.wav"),
+  high: new Sound("/audio/high.wav"),
+  kick: new Sound("/audio/kick.wav"),
+  low: new Sound("/audio/low.wav"),
+  mid: new Sound("/audio/mid.wav"),
+  open: new Sound("/audio/open.wav"),
+  perc1: new Sound("/audio/perc1.wav"),
+  perc2: new Sound("/audio/perc2.wav"),
+  rim: new Sound("/audio/rim.wav"),
+  shake: new Sound("/audio/shake.wav"),
+  snare: new Sound("/audio/snare.wav"),
+};
+
 var LBTutorDrums= React.createClass({
 
   getInitialState: function() {
@@ -7,7 +60,6 @@ var LBTutorDrums= React.createClass({
       players: []
     }
   },
-
   handleEvents: function(e) {
     if (e.action === 'round') {
       this.sendSimon();
@@ -32,15 +84,14 @@ var LBTutorDrums= React.createClass({
     AppDispatcher.unregister(this.token)
   },
   onStart: function() {
-    console.log("start")
-    var audio = new Audio('/audio/crash.wav');
-    audio.play();
+
+    audio.snare.play();
+
   },
   onReset: function() {
-    var audio = new Audio('/audio/snare.wav');
-    audio.play();
-  },
 
+    audio.clap.play();
+  },
   render: function() {
     var winner = -1;
     var max = 0;

@@ -27,6 +27,7 @@ var lbcanvaslib = {
           className:this.state.tool.className,
           data:null,
           conf:null,
+          isGadget:e.isGadget,
           x: toolx,
           y: tooly
         };
@@ -52,8 +53,11 @@ var lbcanvaslib = {
   toolstopmove: function(e) {
     var vx = this.state.ox - this.state.x
     var vy = this.state.oy - this.state.y
+
     if (Math.abs(vy) < 10 && Math.abs(vx) < 10) {
-      this.selectTool(e.objid,e.className,e.data,e.conf);
+      if (!e.isGadget) {
+        this.selectTool(e.objid,e.className,e.data,e.conf);
+      }
     }
   },
 

@@ -1,14 +1,16 @@
-.modal.fade#showcode tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-  .modal_wrapper
-    .modal-dialog
-      .modal-content
-        .modal-header
-          button.close type="button" data-dismiss="modal" aria-hidden="true" ×
-          h4.modal-title Source Code
-        .modal-body
-          = react_component 'LBCodeEditor', {}
-        .modal-footer
-          button.btn.btn-primary#confirm-dialog-button-right type="button" onClick="savelbcode()" Save and Close
+/.modal.fade#showcode tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
+/  .modal_wrapper
+/    .modal-dialog
+/      .modal-content
+/        .modal-header
+/          /button.close type="button" data-dismiss="modal" aria-hidden="true"
+/          h4.modal-title
+/            | Source Code
+/            span style="float:right"
+/              button.btn.btn-xs.btn-primary#confirm-dialog-button-right type="button" onClick="savelbcode()" Save and Close
+/        .modal-body
+= react_component 'LBCodeEditor', {}
+
 
 .modal.fade#showmsg tabindex="-1" role="dialog" aria-labelledby="myMsg" aria-hidden="true"
   .modal_wrapper

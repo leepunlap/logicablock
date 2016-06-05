@@ -73,6 +73,8 @@ var LBCanvas = React.createClass({
       return (<Face max={4} className={className} data={data} conf={conf} objid={i} x={x} y={y} />)
     } else if (className == 'lb-remote') {
       return (<Remote max={4} className={className} data={data} conf={conf} objid={i} x={x} y={y} />)
+    } else if (className == 'lb-hex') {
+      return (<Hex max={1} className={className} isgadget="true" data={data} conf={conf} objid={i} x={x} y={y} />)
     }
   },
   render: function() {

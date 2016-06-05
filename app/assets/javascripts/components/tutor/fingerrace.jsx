@@ -15,11 +15,11 @@ var LBTutorFingerrace = React.createClass({
     var config = getConfig();
     var genSimonSays = function() {
       var text = "";
-      var possible = "ABCDEF";
-      for( var i=0; i < 6; i++ )
+      var possible = "ABCD";
+      for( var i=0; i < 4; i++ )
         text += possible.charAt(Math.floor(Math.random() * possible.length));
       return text;
-    }
+    };
     var simon = genSimonSays();
     this.state.round++;
     this.setState({round:this.state.round, simon:simon, status:'round ' + this.state.round, simontime:new Date().getTime()})
@@ -44,7 +44,9 @@ var LBTutorFingerrace = React.createClass({
       socket.emit('register', config);
     });
     socket.off('groupmembership').on('groupmembership', function (data) {
-      this.setState({players:data});
+      if (!this.state.running) {
+        this.setState({players:data});
+      }
     }.bind(this));
     socket.off('gamemove').on('gamemove', function (data) {
       this.state.players.map(function(p) {
