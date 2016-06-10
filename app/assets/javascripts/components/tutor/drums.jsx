@@ -88,7 +88,7 @@ var LBTutorDrumsPlayer= React.createClass({
           this.setState({bar:this.state.bar,wholenote:this.state.wholenote,quarternote:this.state.quarternote})
           for (var inst in beats) {
             var bar = beats[inst][this.state.bar-1];
-            var whole = parseInt(bar[this.state.wholenote-1]);
+            var whole = parseInt(bar[this.state.wholenote-1], 16);
             var quarter = whole & Math.pow(2,4 - this.state.quarternote);
             if (quarter > 0) {
               audio[inst].play();
