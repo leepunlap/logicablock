@@ -143,6 +143,17 @@ function lbSendGameMove(move) {
   });
 }
 
+function lbSendDrums(speed,beats) {
+  var config = getConfig();
+  socket.emit('gamemove',{
+    action:'beats',
+    speed:speed,
+    beats:beats,
+    username:config.username,
+    group:config.group,
+    game:'drums',
+  });
+}
 
 
 function lbYouSay(char) {

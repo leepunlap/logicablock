@@ -58,6 +58,7 @@ var LBCodeEditor = React.createClass({
             <li><a onClick={()=>this.loadFile("faces.js")} href="#">Faces</a></li>
             <li><a onClick={()=>this.loadFile("rockpaperscissors.js")} href="#">Rock Paper Scissors</a></li>
             <li><a onClick={()=>this.loadFile("fingerrace.js")} href="#">Finger Race</a></li>
+            <li><a onClick={()=>this.loadFile("drums.js")} href="#">Drums</a></li>
           </ul>
         </div>
       </span>
