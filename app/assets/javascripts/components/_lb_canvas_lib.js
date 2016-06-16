@@ -146,7 +146,7 @@ var lbcanvaslib = {
     var outputobj = this.findToolByObjectId(e.toobjid);
     outputobj.data = inputobj.data;
     if (outputobj.conf) {
-      var url = "http://"+outputobj.conf.ipaddr+":8080/api.php?cmd=8x8&data=" + outputobj.data;
+      var url = "http://"+outputobj.conf.ipaddr+"/api/api.php?cmd=8x8&data=" + outputobj.data;
       console.log(url)
       $.get(url, function (data) {
       });
@@ -159,7 +159,7 @@ var lbcanvaslib = {
     outputobj.data = "0000000000000000"
     this.setState({items:this.state.items});
     if (outputobj.conf) {
-      var url = "http://"+outputobj.conf.ipaddr+":8080/api.php?cmd=8x8&data=" + outputobj.data;
+      var url = "http://"+outputobj.conf.ipaddr+"/api/api.php?cmd=8x8&data=" + outputobj.data;
       console.log(url)
       $.get(url, function (data) {
       });

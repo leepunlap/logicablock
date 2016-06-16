@@ -56,18 +56,10 @@ var LBToolbox = React.createClass({
     })
   },
   onRun: function(e){
-    if (typeof(lbRun) == 'undefined') {
-      lbMsg("Runtime Error","Must define fuction lbRun()")
-    } else {
-      lbRun();
-    }
+    onLbRun()
   },
   onStop: function(e){
-    if (typeof(lbStop) == 'undefined') {
-      lbMsg("Runtime Error","Must define fuction lbStop()")
-    } else {
-      lbStop();
-    }
+    onLbStop()
   },
   onEditID: function(e){
     this.setState({editplayer: true})

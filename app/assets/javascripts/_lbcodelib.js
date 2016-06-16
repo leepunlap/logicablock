@@ -1,5 +1,83 @@
 var lbcontroller = null;
 var lbinternaltimer = null;
+var lbspritesarray = [];
+
+function lbGameCanvasWidth() {
+  return document.getElementById('gamecanvas').offsetWidth
+}
+function lbGameCanvasHeight() {
+  return document.getElementById('gamecanvas').offsetHeight
+}
+
+function makeid(len)
+{
+  var text = "";
+  var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  for( var i=0; i < len; i++ )
+    text += possible.charAt(Math.floor(Math.random() * possible.length));
+
+  return text;
+}
+
+function lbSprite(name) {
+  var key = makeid(8);
+  AppDispatcher.dispatch({
+    action:'addsprite',
+    key:key,
+    name:name
+  });
+  return key;
+}
+function lbClearSprites() {
+  AppDispatcher.dispatch({
+    action:'clearsprites'
+  });
+}
+function lbSetSpritePos(key,x,y) {
+  AppDispatcher.dispatch({
+    action:'setspritepos',
+    key:key,
+    x:x,
+    y:y
+  });
+}
+function lbSetSpriteVelocity(key,x,y) {
+  AppDispatcher.dispatch({
+    action:'setspritevelocity',
+    key:key,
+    vx:x,
+    vy:y
+  });
+}
+function lbSetSpriteElasticity(key,el) {
+  AppDispatcher.dispatch({
+    action:'setspriteelasticity',
+    key:key,
+    el:el
+  });
+}
+function lbMoveSprites() {
+  AppDispatcher.dispatch({
+    action:'movesprites',
+  });
+}
+
+function onLbRun() {
+  if (typeof(lbRun) == 'undefined') {
+    lbMsg("Runtime Error","Must define fuction lbRun()")
+  } else {
+    lbRun();
+  }
+}
+
+function onLbStop() {
+  if (typeof(lbStop) == 'undefined') {
+    lbMsg("Runtime Error","Must define fuction lbStop()")
+  } else {
+    lbStop();
+  }
+}
 
 function savelbcode() {
   this.scriptelement = $("lbscript");
@@ -98,11 +176,13 @@ function lbStartTimer(ms) {
   if (!ms) {
     ms = 1000;
   }
-  lbinternaltimer = setInterval(function() {
-    if (typeof(lbTimer) !== 'undefined') {
-      lbTimer()
-    }
-  },ms)
+  if (lbinternaltimer == null) {
+    lbinternaltimer = setInterval(function() {
+      if (typeof(lbTimer) !== 'undefined') {
+        lbTimer()
+      }
+    },ms)
+  }
 }
 
 function lbStopTimer() {
@@ -167,6 +247,14 @@ function lbYouSay(char) {
     }
   })
   return lb_yousay;
+}
+
+function lbShowGameDisplay() {
+  $('#gamedisplay').modal('show');
+}
+
+function lbHideGameDisplay() {
+  $('#gamedisplay').modal('hide');
 }
 
 window.onerror = function myErrorHandler(errorMsg, url, lineNumber) {
