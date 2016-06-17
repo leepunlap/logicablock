@@ -63,6 +63,14 @@ function lbMoveSprites() {
   });
 }
 
+function lbSetGravity(gx,gy) {
+  AppDispatcher.dispatch({
+    action:'setgravity',
+    gx:gx,
+    gy:gy
+  });
+}
+
 function onLbRun() {
   if (typeof(lbRun) == 'undefined') {
     lbMsg("Runtime Error","Must define fuction lbRun()")

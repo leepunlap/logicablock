@@ -2,7 +2,7 @@
 
 var LBGameDisplay = React.createClass({
   getInitialState: function() {
-    return {debugmsg:"OK",sprites:[]};
+    return {debugmsg:"OK",sprites:[],gx:0,gy:0};
   },
   handleEvents: function(e) {
     if (e.action === 'addsprite') {
@@ -38,6 +38,9 @@ var LBGameDisplay = React.createClass({
         }
       }.bind(this))
     }
+    if (e.action === 'setgravity') {
+      this.setState({gx:e.gx,gy:e.gy})
+    }
     if (e.action === 'movesprites') {
       if (lbGameCanvasHeight() < 100 || lbGameCanvasWidth() < 100 ) {
         return;
@@ -47,18 +50,24 @@ var LBGameDisplay = React.createClass({
         if (typeof (s.el) !== 'undefined') {
           el = s.el;
         }
+        s.vx += this.state.gx;
+        s.vy += this.state.gy;
         s.x += s.vx;
         s.y += s.vy;
+
         if (s.x > lbGameCanvasWidth() - 100) {
           s.x = lbGameCanvasWidth() - 100;
           s.vx = - (s.vx * el);
-        } else if (s.y > lbGameCanvasHeight() - 100) {
+        }
+        if (s.y > lbGameCanvasHeight() - 100) {
           s.y = lbGameCanvasHeight() - 100;
           s.vy = -(s.vy * el);
-        } else if (s.x < 0) {
+        }
+        if (s.x < 0) {
           s.x = 0;
           s.vx = - (s.vx * el);
-        } else if (s.y < 0) {
+        }
+        if (s.y < 0) {
           s.y = 0;
           s.vy = - (s.vy * el);
         }
