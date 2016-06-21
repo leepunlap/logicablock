@@ -2,6 +2,8 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 root = exports ? this
+AppDispatcher = new Flux.Dispatcher();
+root.AppDispatcher = AppDispatcher
 $ ->
 	root.showLoading = () ->
 		$('#spinner').show()
@@ -9,8 +11,6 @@ $ ->
 	root.hideLoading = () ->
 		$('#spinner').hide()
 		return
-	AppDispatcher = new Flux.Dispatcher();
-	root.AppDispatcher = AppDispatcher
 	root.SetStatus = (s) ->
 		AppDispatcher.dispatch {action:'status',status:s}
 		return

@@ -1,17 +1,5 @@
-/.modal.fade#showcode tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"
-/  .modal_wrapper
-/    .modal-dialog
-/      .modal-content
-/        .modal-header
-/          /button.close type="button" data-dismiss="modal" aria-hidden="true"
-/          h4.modal-title
-/            | Source Code
-/            span style="float:right"
-/              button.btn.btn-xs.btn-primary#confirm-dialog-button-right type="button" onClick="savelbcode()" Save and Close
-/        .modal-body
 = react_component 'LBCodeEditor', {}
 = react_component 'LBGameDisplay', {}
-
 
 .modal.fade#showmsg tabindex="-1" role="dialog" aria-labelledby="myMsg" aria-hidden="true"
   .modal_wrapper
@@ -25,7 +13,7 @@
         .modal-footer
           button.btn.btn-primary#confirm-dialog-button-right type="button" data-dismiss="modal" class="" Close
 
-.row.fullheight
+.row.fullheight#maincanvas
   .lbtoolboxpanel.fullinnerheight
     .panel.panel-logica.fullinnerheight
       .panel-heading
@@ -58,3 +46,39 @@ javascript:
       lbOnGameMessage(data);
     })
   });
+  var resizeFn = function ($, window, undefined) {
+    // First check to see if the platform is an iPhone or iPod
+    if (/iP/.test(navigator.platform) && /Safari/i.test(navigator.userAgent)) {
+      var mobileSafari = "Safari";
+    }
+    // Set the div height
+    function setHeight($rightSidebar) {
+      //var new_height = $(this).height();
+      var new_height = window.innerHeight
+      //alert(new_height);
+      // if mobileSafari add +60px
+      if (typeof mobileSafari === 'string') {
+      }
+      $rightSidebar.css('height', new_height);
+    }
+
+    setHeight($('.fullheight'));
+    setHeight($('.modal-dialog'));
+    $(window).resize(function () {
+      setHeight.call(this, $('.fullheight'));
+      setHeight.call(this, $('.modal-dialog'));
+    });
+    //
+    //window.onscroll = scroll;
+    //
+    //function scroll() {
+    //  $('.fullheight').css('height', window.innerHeight);
+    //  $('.modal-dialog').css('height', window.innerHeight);
+    //  //alert("检测到页面滚动事件:" + window.innerHeight + " " + window.pageYOffset);
+    //  // 注意: window.innerWidth 和 window.innerHeight 可以获得页面可见区域的宽和高.
+    //}
+
+
+  };
+  resizeFn(jQuery, this);
+

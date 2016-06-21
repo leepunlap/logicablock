@@ -97,7 +97,8 @@ function savelbcode() {
   this.element.id = "lbscript";
   this.element.innerHTML = document.getElementById("view").innerText;
   document.getElementsByTagName("HEAD")[0].appendChild(this.element);
-  $('#showcode').modal('hide')
+  $('#showcode').modal('hide');
+  $('#maincanvas').show();
 }
 
 function lbMsg(title,msg) {
@@ -266,6 +267,6 @@ function lbHideGameDisplay() {
 }
 
 window.onerror = function myErrorHandler(errorMsg, url, lineNumber) {
-  lbMsg("Error occured: ", errorMsg);//or any message
+  lbMsg("Error occured at line " + lineNumber + " : ", errorMsg);//or any message
   return false;
 }

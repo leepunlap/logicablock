@@ -22,6 +22,7 @@ var Controller = React.createClass({
   },
   onEditCode: function() {
     $('#showcode').modal('show');
+    $('#maincanvas').hide();
   },
   render: function() {
     var that = this;
