@@ -170,9 +170,11 @@ Face = React.createClass({
         this.state.propsdata = this.props.data;
       }
 
+      var hs = faceArrayToData(this.state.leds);
+
       return (
         <div>
-          <h4>Create New Face</h4>
+          <h4>Face {hs}</h4>
           <div>
             {this.state.leds.map(ledEditRow)}
           </div>

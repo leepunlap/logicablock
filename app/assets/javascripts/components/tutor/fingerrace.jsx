@@ -121,7 +121,7 @@ var LBTutorFingerrace = React.createClass({
         winnerClass = "panel-heading-race-win";
       }
       return (
-        <div className="panel panel-logica panel-race"key={player.id}>
+        <div className="panel panel-logica panel-race" key={player.id}>
           <div className={winnerClass}>
             {player.userdata.username} <strong>{player.userdata.yousay}</strong>
           </div>

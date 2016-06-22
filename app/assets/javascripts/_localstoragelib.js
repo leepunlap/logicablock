@@ -58,9 +58,10 @@ function faceDataToArray(str) {
   while (str.length >= 2) {
     var byte = parseInt(str.substring(0, 2), 16)
     var bytearray = []
-    for (var b=0;b<8;b++) {
-      var bit = byte & 0x01;
-      byte = byte >>> 1;
+    for (var b=7;b>=0;b--) {
+      var mask = 1 << b;
+      var bit = byte & mask;
+      if (bit > 1) bit = 1;
       bytearray.push(bit);
     }
     result.push(bytearray);
@@ -74,7 +75,7 @@ function faceArrayToData (arr) {
   var data = arr.map(function (row) {
     var b = 0x00;
     for (var i in row) {
-      var v = row[7-i];
+      var v = row[i];
       b = b << 1;
       b += v;
       //console.log("i:" + v + ", b:" + b);

@@ -2,6 +2,43 @@ var lbcontroller = null;
 var lbinternaltimer = null;
 var lbspritesarray = [];
 
+function lbInit3DObject() {
+  var lb3DObj = {
+    x:1,
+    y:1,
+    z:1,
+    rx:0,
+    ry:0,
+    data:[]
+  };
+  return lb3DObj;
+}
+function lbAdd8x8Layer(o,d) {
+  o.data.push(d)
+}
+
+function lbSetPosition(o,x,y,z) {
+  o.x = x;
+  o.y = y;
+  o.z = z;
+}
+
+function lbSetRotation(o,rx,ry) {
+  o.rx = rx;
+  o.ry = ry;
+}
+
+function lbSend8x8Object(o) {
+  var config = getConfig();
+  socket.emit('gamemove',{
+    action:'send3dobj',
+    username:config.username,
+    group:config.group,
+    data:o,
+    game:'world',
+  });
+}
+
 function lbGameCanvasWidth() {
   return document.getElementById('gamecanvas').offsetWidth
 }
