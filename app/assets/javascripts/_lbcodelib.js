@@ -141,7 +141,9 @@ function savelbcode() {
 function lbMsg(title,msg) {
   document.getElementById("msgtitle").innerText = title;
   document.getElementById("msgbody").innerText = msg;
-  $('#showmsg').modal('show');
+  if($('#showmsg')) {
+    $('#showmsg').modal('show');
+  }
 }
 
 function lbRemoteButtonPressed (oid, button) {
@@ -153,6 +155,14 @@ function lbRemoteButtonPressed (oid, button) {
     lbMsg("Runtime Error","Must define fuction lbOnRemote()")
   } else {
     lbOnRemote(oid,button);
+  }
+}
+
+function lbGameDataReceived (data) {
+  if (typeof(lbOnGameData) !== 'undefined') {
+    setTimeout(function() {
+      lbOnGameData(data);
+    }.bind(data),250)
   }
 }
 

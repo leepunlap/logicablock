@@ -40,11 +40,15 @@ var LBCodeEditor = React.createClass({
   },
   loadFile: function(f) {
     var path = "/templates/" + f;
-    console.log(path)
-    console.log(this.editor)
     $.get(path, function (data) {
       this.editor.getSession().setValue(data)
     }.bind(this));
+  },
+  loadUserFile: function(f) {
+    this.editor.getSession().setValue(loadLbUserFile(f))
+  },
+  saveUserFile: function(f) {
+    saveLbUserFile(f)
   },
   onClose: function(e){
     AppDispatcher.dispatch({
@@ -85,6 +89,22 @@ var LBCodeEditor = React.createClass({
     });
   },
   render: function() {
+    var saveManu = (
+      <span style={{float:'right'}}>
+        <div className="dropdown">
+          <button className="btn btn-sm btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            Save
+            <span className="caret"></span>
+          </button>
+          <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
+            <li><a onClick={()=>this.saveUserFile("slot1")} href="#"><span className="glyphicon glyphicon-user"></span> Slot 1</a></li>
+            <li><a onClick={()=>this.saveUserFile("slot2")} href="#"><span className="glyphicon glyphicon-user"></span> Slot 2</a></li>
+            <li><a onClick={()=>this.saveUserFile("slot3")} href="#"><span className="glyphicon glyphicon-user"></span> Slot 3</a></li>
+            <li><a onClick={()=>this.saveUserFile("slot4")} href="#"><span className="glyphicon glyphicon-user"></span> Slot 4</a></li>
+          </ul>
+        </div>
+      </span>
+    )
     var fileOpenMenu = (
       <span style={{float:'right'}}>
         <div className="dropdown">
@@ -93,12 +113,18 @@ var LBCodeEditor = React.createClass({
             <span className="caret"></span>
           </button>
           <ul className="dropdown-menu" aria-labelledby="dropdownMenu1">
-            <li><a onClick={()=>this.loadFile("faces.js")} href="#">Faces</a></li>
-            <li><a onClick={()=>this.loadFile("rockpaperscissors.js")} href="#">Rock Paper Scissors</a></li>
-            <li><a onClick={()=>this.loadFile("fingerrace.js")} href="#">Finger Race</a></li>
-            <li><a onClick={()=>this.loadFile("drums.js")} href="#">Drumsm</a></li>
-            <li><a onClick={()=>this.loadFile("balls.js")} href="#">Balls</a></li>
-            <li><a onClick={()=>this.loadFile("world.js")} href="#">World</a></li>
+            <li><a onClick={()=>this.loadUserFile("slot1")} href="#"><span className="glyphicon glyphicon-user"></span> Slot 1</a></li>
+            <li><a onClick={()=>this.loadUserFile("slot2")} href="#"><span className="glyphicon glyphicon-user"></span> Slot 2</a></li>
+            <li><a onClick={()=>this.loadUserFile("slot3")} href="#"><span className="glyphicon glyphicon-user"></span> Slot 3</a></li>
+            <li><a onClick={()=>this.loadUserFile("slot4")} href="#"><span className="glyphicon glyphicon-user"></span> Slot 4</a></li>
+
+            <li><a onClick={()=>this.loadFile("faces.js")} href="#"><span className="glyphicon glyphicon-cloud"></span> Faces</a></li>
+            <li><a onClick={()=>this.loadFile("rockpaperscissors.js")} href="#"><span className="glyphicon glyphicon-cloud"></span> Rock Paper Scissors</a></li>
+            <li><a onClick={()=>this.loadFile("fingerrace.js")} href="#"><span className="glyphicon glyphicon-cloud"></span> Finger Race</a></li>
+            <li><a onClick={()=>this.loadFile("drums.js")} href="#"><span className="glyphicon glyphicon-cloud"></span> Drums</a></li>
+            <li><a onClick={()=>this.loadFile("balls.js")} href="#"><span className="glyphicon glyphicon-cloud"></span> Balls</a></li>
+            <li><a onClick={()=>this.loadFile("world.js")} href="#"><span className="glyphicon glyphicon-cloud"></span> World</a></li>
+            <li><a onClick={()=>this.loadFile("ai.js")} href="#"><span className="glyphicon glyphicon-cloud"></span> AI</a></li>
           </ul>
         </div>
       </span>
@@ -108,7 +134,7 @@ var LBCodeEditor = React.createClass({
         <span style={{position:'absolute',top:-100}}>
         <input id="popkeyboard"></input>
         </span>
-        <button className="btn btn-sm btn-primary" id="confirm-dialog-button-right" onClick={savelbcode} type="button">Save and Close</button>
+        <button className="btn btn-sm btn-primary" id="confirm-dialog-button-right" onClick={savelbcode} type="button">Close</button>
       </span>
     );
     var cursorButtons = (
@@ -131,6 +157,7 @@ var LBCodeEditor = React.createClass({
               <div className="modal-content">
                 <div className="modal-header">
                   {closeBtn}
+                  {saveManu}
                   {fileOpenMenu}
                   {cursorButtons}
                 </div>

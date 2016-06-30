@@ -30,13 +30,29 @@ function deleteFace(index) {
   return faces;
 }
 
+function saveLbUserFile(f) {
+  var storage = window.localStorage;
+  if (!storage.getItem("files")) storage.setItem("files",JSON.stringify({}));
+  var files = JSON.parse(storage.getItem("files"));
+  files[f] = document.getElementById("view").innerText;
+  storage.setItem("files",JSON.stringify(files));
+}
 
+function loadLbUserFile(f) {
+  var storage = window.localStorage;
+  if (!storage.getItem("files")) storage.setItem("files",JSON.stringify({}));
+  var files = JSON.parse(storage.getItem("files"));
+  var file = files[f];
+  if (typeof(file) === 'undefined') {
+    return "";
+  }
+  return file;
+}
 
 function loadProjects() {
   var storage = window.localStorage;
   if (!storage.getItem("projects")) storage.setItem("projects",JSON.stringify({}));
   var projects = JSON.parse(storage.getItem("projects"));
-
   return projects;
 }
 

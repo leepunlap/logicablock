@@ -174,8 +174,13 @@ var lbcanvaslib = {
 
   lbgamemessage: function(e) {
     var outputobj = this.findToolByObjectId(e.objid);
+    if (!outputobj) {
+      lbMsg("No Controller","Drag controller onto canvas to create one");
+      return;
+    }
     outputobj.conf = $.extend(outputobj.conf, e.message);
-    this.setState({items:this.state.items})
+    this.setState({items:this.state.items});
+    lbGameDataReceived(e.message.data)
   },
 
   remote: function(e) {

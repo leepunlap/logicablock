@@ -7,6 +7,15 @@ var lbcontrollergamelib = {
     width:300
   },
 
+  gameJSONStyle: {
+    position:'absolute',
+    top:0,
+    left:100,
+    width:450,
+    fontSize:11,
+    textAlign:'-webkit-left'
+  },
+
   fingerrace: {
     render: function () {
       gamemessage = null;
@@ -23,6 +32,22 @@ var lbcontrollergamelib = {
             </div>
           )
         }
+
+      }
+      return gamemessage;
+    }
+  },
+
+  ai: {
+    render: function () {
+      var json = JSON.stringify(this.props.conf.data, null, 2)
+      gamemessage = null;
+      if (this.props.conf) {
+        gamemessage = (
+          <pre style={lbcontrollergamelib.gameJSONStyle}>
+            {json}
+          </pre>
+        )
       }
       return gamemessage;
     }

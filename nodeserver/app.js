@@ -36,8 +36,19 @@ io.on('connection', function(socket){
         io.emit('groupmembership',getPlayers());
     });
     socket.on('game', function(data){
-        console.log(socket.id + ' game data');
-        io.emit('game',data);
+
+        if (typeof(data.id) !== 'undefined') {
+            for (var socketId in io.sockets.sockets) {
+                if (data.id == socketId) {
+                    console.log(socket.id + ' game data for ' + socketId);
+                    io.emit('game',data);
+                }
+            }
+        } else {
+            console.log(socket.id + ' broadcast game data');
+            io.emit('game',data);
+        }
+
     });
     socket.on('gamemove', function(data){
         console.log(socket.id + ' game move');

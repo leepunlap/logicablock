@@ -170,6 +170,11 @@ var LBTutorDrums= React.createClass({
     }.bind(this));
     this.token = AppDispatcher.register(this.handleEvents);
   },
+  componentWillUnmount: function() {
+    socket.off('connect');
+    socket.off('groupmembership')
+    AppDispatcher.unregister(this.token)
+  },
   onPlay: function(inst) {
     audio[inst].play();
   },
