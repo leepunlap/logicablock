@@ -5,7 +5,7 @@ var Remote = React.createClass({
     return {};
   },
   render: function() {
-
+    
     var draw_qrcode = function(text, typeNumber, errorCorrectLevel) {
       document.write(create_qrcode(text, typeNumber, errorCorrectLevel) );
     };
@@ -19,7 +19,7 @@ var Remote = React.createClass({
 
     if (this.props.isEditing) {
 
-      var remoteURL = this.props.siohost + "/#/remote?o=" + this.props.objid;
+      var remoteURL = window.location.protocol + "//" + this.props.siohost + "/#/remote?o=" + this.props.objid;
 
       return (
         <div>

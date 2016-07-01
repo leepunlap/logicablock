@@ -19,7 +19,7 @@
       .panel-heading
         | Toolbox
       .panel-body.canvas#lbtoolbox
-        = react_component 'LBToolbox', {siohost:"#{request.ssl? ? "https" : "http"}://#{request.host}:3001"}, {prerender: false, class: 'lbtoolbox'}
+        = react_component 'LBToolbox', {siohost:"#{request.host}:3001"}, {prerender: false, class: 'lbtoolbox'}
 
   .lbcanvaspanel.fullinnerheight
     .panel.panel-logica.fullinnerheight
