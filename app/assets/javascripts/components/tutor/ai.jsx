@@ -6,7 +6,8 @@ var LBTutorAI= React.createClass({
       players:[],
       userid:null,
       dialogue:"",
-      response:""
+      response:"",
+      listening:false
     }
   },
   componentDidMount: function() {
@@ -90,9 +91,9 @@ var LBTutorAI= React.createClass({
         return;
       }
 
-      //speech = data.result.speech;
+      speech = data.result.speech;
       // Use Text To Speech service to play text.
-      //apiAiTts.tts(speech, undefined, 'en-US');
+      apiAiTts.tts(speech, undefined, 'en-US');
 
       this.state.dialogue += ('user : ' + data.result.resolvedQuery + '\napi  : ' + data.result.speech + '\n\n');
       this.setState({dialogue:this.state.dialogue})
@@ -192,6 +193,14 @@ var LBTutorAI= React.createClass({
       text += possible.charAt(Math.floor(Math.random() * possible.length));
     }
     return text;
+  }, 
+  onSpeakBtn: function() {
+    if (this.state.listening) {
+      this.apiAi.stopListening();
+    } else {
+      this.apiAi.startListening();
+    }
+    this.setState({"listening":!this.state.listening})
   },
   render: function() {
 
@@ -221,7 +230,13 @@ var LBTutorAI= React.createClass({
       padding:0
     };
 
-    var speaking = "Start Speaking";
+    if (this.state.listening) {
+      var speaking = "Stop Speaking";
+    } else {
+      speaking = "Start Speaking";
+    }
+
+
 
     return (
       <div className="row fullheight" style={{color:'white'}}>
@@ -233,7 +248,7 @@ var LBTutorAI= React.createClass({
             <h2>AI</h2>
             <img src="/images/games/ai.jpg"/>
             <hr noshade="true" />
-            <button className="btn btn-default">{speaking}</button>
+            <button onClick={this.onSpeakBtn}className="btn btn-default">{speaking}</button>
             <input className="form-control" id="text" type="text"/>
             <button className="btn btn-default" onClick={()=>this.sendTextCmd($('#text').val())}>Send Command</button>
           </center>
