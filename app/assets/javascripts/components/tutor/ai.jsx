@@ -18,11 +18,19 @@ var LBTutorAI= React.createClass({
     SERVER_DOMAIN = 'api.api.ai';
     SERVER_PORT = '4435';
     ACCESS_TOKEN = '9bec61fd097b470fb8d1c36b0ae11296';
+
+    var storage = window.localStorage;
+    if (!storage.getItem("apiaitoken")) storage.setItem("apiaitoken",ACCESS_TOKEN);
+    var token = storage.getItem("apiaitoken");
+    if (!storage.getItem("apiailang")) storage.setItem("apiailang","EN");
+    var apiailang = storage.getItem("apiailang");
+    this.setState({defaultapiaitoken:ACCESS_TOKEN,apiaitoken:token,lang:apiailang});
+
     var config = {
       server: SERVER_PROTO + '://' + SERVER_DOMAIN + ':' + SERVER_PORT + '/api/ws/query',
-      token: ACCESS_TOKEN,// Use Client access token there (see agent keys).
+      token: token,// Use Client access token there (see agent keys).
       sessionId: this.sessionId,
-      lang: 'en',
+      lang: apiailang,
       onInit: function () {
         lbMsg("> ON INIT use config",this.sessionId);
         apiAi.open();
@@ -60,14 +68,14 @@ var LBTutorAI= React.createClass({
        * You can send json through websocet.
        * For example to initialise dialog if you have appropriate intent.
        */
-      apiAi.sendJson({
-        "v": "20150512",
-        "query": "hello",
-        "timezone": "GMT+8",
-        "lang": "en",
-        //"contexts" : ["weather", "local"],
-        "sessionId": this.sessionId
-      });
+      // apiAi.sendJson({
+      //   "v": "20150512",
+      //   "query": "hello",
+      //   "timezone": "GMT+8",
+      //   "lang": "en",
+      //   //"contexts" : ["weather", "local"],
+      //   "sessionId": this.sessionId
+      // });
 
     }.bind(this);
 
@@ -105,7 +113,6 @@ var LBTutorAI= React.createClass({
           id:this.state.userid,
           action:'aiaction',
           data:data.result,
-          yousay:"",
           group:config.group,
           game:'ai',
         });
@@ -176,15 +183,28 @@ var LBTutorAI= React.createClass({
 
   },
   sendTextCmd: function(cmd) {
+    var storage = window.localStorage;
+    var apiailang = storage.getItem("apiailang");
     var queryJson = {
       "v": "20150910",
       "query": cmd,
       "timezone": "GMT+8",
-      "lang": "en",
+      "lang": apiailang,
       "sessionId": this.sessionId
     };
     lbMsg('sendJson', queryJson);
     apiAi.sendJson(queryJson);
+  },
+  updateToken: function(token,lang) {
+    var storage = window.localStorage;
+    if (token.length == this.state.defaultapiaitoken.length) {
+      storage.setItem("apiaitoken",token);
+      storage.setItem("apiailang",lang);
+    } else {
+      storage.setItem("apiaitoken",this.state.defaultapiaitoken);
+      storage.setItem("apiailang",'en');
+    }
+    location.reload(true);
   },
   _generateId: function(length) {
     var text = "";
@@ -236,6 +256,11 @@ var LBTutorAI= React.createClass({
       speaking = "Start Speaking";
     }
 
+    if (this.state.defaultapiaitoken === this.state.apiaitoken) {
+      var currenttoken = "default";
+    } else {
+      currenttoken = this.state.apiaitoken;
+    }
 
 
     return (
@@ -252,6 +277,14 @@ var LBTutorAI= React.createClass({
             <input className="form-control" id="text" type="text"/>
             <button className="btn btn-default" onClick={()=>this.sendTextCmd($('#text').val())}>Send Command</button>
           </center>
+          <span>api.ai token
+            <a style={{float:'right'}} onClick={()=>this.updateToken($('#newapiaitoken').val(),'EN')}>SetEN</a>
+            <span style={{float:'right'}}>&nbsp;</span>
+            <a style={{float:'right'}} onClick={()=>this.updateToken($('#newapiaitoken').val(),'ZH-HK')}>SetHK</a>
+          </span>
+          <input className="form-control" style={{fontSize:12,height:'auto',padding:0}} id="newapiaitoken"></input>
+          <p style={{fontSize:12,color:'#ddd'}}>{currenttoken} : {this.state.lang}</p>
+
           <h4 id="msgtitle">&nbsp;</h4>
           <p style={{fontSize:12,color:'#ddd'}} id="msgbody">&nbsp;</p>
         </div>
