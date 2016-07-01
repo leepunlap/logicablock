@@ -14,5 +14,5 @@ html
 		== yield
 
 javascript:
-  var socket = io.connect("http://#{request.host}:3001");
+  var socket = io.connect(window.location.protocol+"//#{request.host}:3001");
 
