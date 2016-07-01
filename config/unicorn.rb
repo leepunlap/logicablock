@@ -11,7 +11,7 @@
 # Use at least one worker per core if you're on a dedicated server,
 # more will usually help for _short_ waits on databases/caches.
 
-APP_PATH = "/home/blee/lb"
+APP_PATH = "/home/education/logicablock"
 
 worker_processes 4
 
@@ -29,7 +29,7 @@ working_directory APP_PATH
 # listen on both a Unix domain socket and a TCP port,
 # we use a shorter backlog for quicker failover when busy
 listen APP_PATH + "/tmp/.unicorn.sock", :backlog => 64
-listen 42342, :tcp_nopush => true
+listen 6004, :tcp_nopush => true
 
 # nuke workers after 30 seconds instead of 60 seconds (the default)
 timeout 30
