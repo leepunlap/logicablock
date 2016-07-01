@@ -128,10 +128,6 @@ var LBTutorAIWebkit= React.createClass({
 
         window.speechSynthesis.speak(utterance);
 
-        // var utterance = new SpeechSynthesisUtterance();
-        // utterance.lang = that.state.lang;
-        // utterance.
-        // window.speechSynthesis.speak(utterance);
       },
       error: function () {
         that.setState({response:"Internal Server Error"});

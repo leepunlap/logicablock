@@ -1,21 +1,32 @@
-lbClear('o1');
+var e;
+var mode = 'face';
 
 function lbTimer() {
   lbMoveSprites();
+}
+
+function lbStop() {
+  lbClearSprites();
+  lbHideGameDisplay();
+  lbStopTimer();
+}
+
+function lbRun() {
+  lbClear('o1');
 }
 
 function lbOnGameData(data) {
   var mood = data.parameters.lbmood;
   var name = data.parameters.myname;
   var action = data.action;
-  var mode = 'face';
 
   if (action === 'newname') {
     mode = 'balls';
     lbClearSprites();
     lbShowGameDisplay();
-    var e = lbSprite(name);
+    e = lbSprite(name);
     lbSetSpritePos(e,100,20);
+    lbStartTimer(25);
   }
 
   if (mode === 'face') {
@@ -32,12 +43,12 @@ function lbOnGameData(data) {
 
   if (mode === 'balls') {
     if (mood === 'happy') {
-      lbSetSpriteVelocity(t,30,-50);
-      lbSetSpriteElasticity(t,0.9);
+      lbSetSpriteVelocity(e,30,-50);
+      lbSetSpriteElasticity(e,0.9);
       lbSetGravity(0,0);
     } else if (mood === 'sad') {
       lbSetGravity(0,1);
-      lbSetSpriteElasticity(t,0.2);
+      lbSetSpriteElasticity(e,0.2);
     }
   }
 
