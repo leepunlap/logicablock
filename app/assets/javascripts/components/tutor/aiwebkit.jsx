@@ -109,6 +109,18 @@ var LBTutorAIWebkit= React.createClass({
       },
       data: JSON.stringify({q: text, lang: that.state.lang}),
       success: function (data) {
+
+        if (that.state.userid) {
+          var config = getConfig();
+          socket.emit('game',{
+            id:that.state.userid,
+            action:'aiaction',
+            data:data.result,
+            group:config.group,
+            game:'ai',
+          });
+        }
+
         that.setState({response:JSON.stringify(data, undefined, 2),
         dialogue:that.state.dialogue + "AI  : " + data.result.speech + "\n"});
 
