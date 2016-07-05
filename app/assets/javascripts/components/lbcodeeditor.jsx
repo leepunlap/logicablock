@@ -85,7 +85,7 @@ var LBCodeEditor = React.createClass({
   },
   onShowKeyboard: function() {
     AppDispatcher.dispatch({
-      action:'centerselection',
+      action:'centerselection'
     });
   },
   render: function() {
@@ -94,13 +94,13 @@ var LBCodeEditor = React.createClass({
         <div className="dropdown">
           <button className="btn btn-sm btn-default dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
             Save
-            <span className="caret"></span>
+            <span className="caret"/>
           </button>
           <ul className="dropdown-menu" aria-labelledby="dropdownMenu2">
-            <li><a onClick={()=>this.saveUserFile("slot1")} href="#"><span className="glyphicon glyphicon-user"></span> Slot 1</a></li>
-            <li><a onClick={()=>this.saveUserFile("slot2")} href="#"><span className="glyphicon glyphicon-user"></span> Slot 2</a></li>
-            <li><a onClick={()=>this.saveUserFile("slot3")} href="#"><span className="glyphicon glyphicon-user"></span> Slot 3</a></li>
-            <li><a onClick={()=>this.saveUserFile("slot4")} href="#"><span className="glyphicon glyphicon-user"></span> Slot 4</a></li>
+            <li><a onClick={()=>this.saveUserFile("slot1")} href="javascript:void(0);"><span className="glyphicon glyphicon-user"/> Slot 1</a></li>
+            <li><a onClick={()=>this.saveUserFile("slot2")} href="javascript:void(0);"><span className="glyphicon glyphicon-user"/> Slot 2</a></li>
+            <li><a onClick={()=>this.saveUserFile("slot3")} href="javascript:void(0);"><span className="glyphicon glyphicon-user"/> Slot 3</a></li>
+            <li><a onClick={()=>this.saveUserFile("slot4")} href="javascript:void(0);"><span className="glyphicon glyphicon-user"/> Slot 4</a></li>
           </ul>
         </div>
       </span>
@@ -110,21 +110,21 @@ var LBCodeEditor = React.createClass({
         <div className="dropdown">
           <button className="btn btn-sm btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
             Load
-            <span className="caret"></span>
+            <span className="caret"/>
           </button>
           <ul className="dropdown-menu" aria-labelledby="dropdownMenu1">
-            <li><a onClick={()=>this.loadUserFile("slot1")} href="#"><span className="glyphicon glyphicon-user"></span> Slot 1</a></li>
-            <li><a onClick={()=>this.loadUserFile("slot2")} href="#"><span className="glyphicon glyphicon-user"></span> Slot 2</a></li>
-            <li><a onClick={()=>this.loadUserFile("slot3")} href="#"><span className="glyphicon glyphicon-user"></span> Slot 3</a></li>
-            <li><a onClick={()=>this.loadUserFile("slot4")} href="#"><span className="glyphicon glyphicon-user"></span> Slot 4</a></li>
+            <li><a onClick={()=>this.loadUserFile("slot1")} href="javascript:void(0);"><span className="glyphicon glyphicon-user"/> Slot 1</a></li>
+            <li><a onClick={()=>this.loadUserFile("slot2")} href="javascript:void(0);"><span className="glyphicon glyphicon-user"/> Slot 2</a></li>
+            <li><a onClick={()=>this.loadUserFile("slot3")} href="javascript:void(0);"><span className="glyphicon glyphicon-user"/> Slot 3</a></li>
+            <li><a onClick={()=>this.loadUserFile("slot4")} href="javascript:void(0);"><span className="glyphicon glyphicon-user"/> Slot 4</a></li>
 
-            <li><a onClick={()=>this.loadFile("faces.js")} href="#"><span className="glyphicon glyphicon-cloud"></span> Faces</a></li>
-            <li><a onClick={()=>this.loadFile("rockpaperscissors.js")} href="#"><span className="glyphicon glyphicon-cloud"></span> Rock Paper Scissors</a></li>
-            <li><a onClick={()=>this.loadFile("fingerrace.js")} href="#"><span className="glyphicon glyphicon-cloud"></span> Finger Race</a></li>
-            <li><a onClick={()=>this.loadFile("drums.js")} href="#"><span className="glyphicon glyphicon-cloud"></span> Drums</a></li>
-            <li><a onClick={()=>this.loadFile("balls.js")} href="#"><span className="glyphicon glyphicon-cloud"></span> Balls</a></li>
-            <li><a onClick={()=>this.loadFile("world.js")} href="#"><span className="glyphicon glyphicon-cloud"></span> World</a></li>
-            <li><a onClick={()=>this.loadFile("ai.js")} href="#"><span className="glyphicon glyphicon-cloud"></span> AI</a></li>
+            <li><a onClick={()=>this.loadFile("faces.js")} href="javascript:void(0);"><span className="glyphicon glyphicon-cloud"/> Faces</a></li>
+            <li><a onClick={()=>this.loadFile("rockpaperscissors.js")} href="javascript:void(0);"><span className="glyphicon glyphicon-cloud"/> Rock Paper Scissors</a></li>
+            <li><a onClick={()=>this.loadFile("fingerrace.js")} href="javascript:void(0);"><span className="glyphicon glyphicon-cloud"/> Finger Race</a></li>
+            <li><a onClick={()=>this.loadFile("drums.js")} href="javascript:void(0);"><span className="glyphicon glyphicon-cloud"/> Drums</a></li>
+            <li><a onClick={()=>this.loadFile("balls.js")} href="javascript:void(0);"><span className="glyphicon glyphicon-cloud"/> Balls</a></li>
+            <li><a onClick={()=>this.loadFile("world.js")} href="javascript:void(0);"><span className="glyphicon glyphicon-cloud"/> World</a></li>
+            <li><a onClick={()=>this.loadFile("ai.js")} href="javascript:void(0);"><span className="glyphicon glyphicon-cloud"/> AI</a></li>
           </ul>
         </div>
       </span>
@@ -132,7 +132,7 @@ var LBCodeEditor = React.createClass({
     var closeBtn = (
       <span style={{float:'right'}}>
         <span style={{position:'absolute',top:-100}}>
-        <input id="popkeyboard"></input>
+        <input id="popkeyboard" />
         </span>
         <button className="btn btn-sm btn-primary" id="confirm-dialog-button-right" onClick={savelbcode} type="button">Close</button>
       </span>
@@ -140,12 +140,12 @@ var LBCodeEditor = React.createClass({
     var cursorButtons = (
       <span style={{float:'left'}}>
         <button className="btn btn-sm btn-warning" style={{color:'black'}} onClick={this.onShowKeyboard} type="button">Edit</button>
-        <button className="btn btn-sm btn-default" onClick={this.onLeftArrow} type="button"><span className="glyphicon glyphicon-arrow-left"></span></button>
-        <button className="btn btn-sm btn-default" onClick={this.onDownArrow} type="button"><span className="glyphicon glyphicon-arrow-down"></span></button>
-        <button className="btn btn-sm btn-default" onClick={this.onUpArrow} type="button"><span className="glyphicon glyphicon-arrow-up"></span></button>
-        <button className="btn btn-sm btn-default" onClick={this.onRightArrow} type="button"><span className="glyphicon glyphicon-arrow-right"></span></button>
+        <button className="btn btn-sm btn-default" onClick={this.onLeftArrow} type="button"><span className="glyphicon glyphicon-arrow-left"/></button>
+        <button className="btn btn-sm btn-default" onClick={this.onDownArrow} type="button"><span className="glyphicon glyphicon-arrow-down"/></button>
+        <button className="btn btn-sm btn-default" onClick={this.onUpArrow} type="button"><span className="glyphicon glyphicon-arrow-up"/></button>
+        <button className="btn btn-sm btn-default" onClick={this.onRightArrow} type="button"><span className="glyphicon glyphicon-arrow-right"/></button>
       </span>
-    )
+    );
     var hiddenStyle = {
       display:'none'
     };
@@ -179,6 +179,6 @@ var LBCodeEditor = React.createClass({
         </pre>
         Closed
       </div>
-    );;
+    );
   }
 });
