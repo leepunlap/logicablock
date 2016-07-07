@@ -125,6 +125,7 @@ var LBCodeEditor = React.createClass({
             <li><a onClick={()=>this.loadFile("balls.js")} href="javascript:void(0);"><span className="glyphicon glyphicon-cloud"/> Balls</a></li>
             <li><a onClick={()=>this.loadFile("world.js")} href="javascript:void(0);"><span className="glyphicon glyphicon-cloud"/> World</a></li>
             <li><a onClick={()=>this.loadFile("ai.js")} href="javascript:void(0);"><span className="glyphicon glyphicon-cloud"/> AI</a></li>
+            <li><a onClick={()=>this.loadFile("battleship.js")} href="javascript:void(0);"><span className="glyphicon glyphicon-cloud"/> Battleship</a></li>
           </ul>
         </div>
       </span>

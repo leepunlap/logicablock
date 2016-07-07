@@ -166,6 +166,18 @@ var lbcanvaslib = {
     }
   },
 
+  lbsend: function(e) {
+    var outputobj = this.findToolByObjectId(e.objid);
+    outputobj.data = e.data;
+    this.setState({items:this.state.items});
+    if (outputobj.conf) {
+      var url = "http://"+outputobj.conf.ipaddr+"/api/api.php?cmd=8x8&data=" + outputobj.data;
+      console.log(url)
+      $.get(url, function (data) {
+      });
+    }
+  },
+
   sendconfig: function(e) {
     var outputobj = this.findToolByObjectId(e.objid);
     outputobj.conf = e.config;

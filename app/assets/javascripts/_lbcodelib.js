@@ -228,6 +228,23 @@ function lbClear(output) {
   }
 }
 
+function lbSend(output,data) {
+  if (!lbcontroller) {
+    lbMsg("No Controller","Drag controller onto canvas to create one");
+    return;
+  }
+  if (typeof(lbcontroller[output]) == 'undefined') {
+    lbMsg("No Connection",output+" is not connected")
+  } else {
+    AppDispatcher.dispatch({
+      action:'lbsend',
+      objid:lbcontroller[output],
+      data:data
+    })
+  }
+}
+
+
 function lbStartTimer(ms) {
   if (!ms) {
     ms = 1000;

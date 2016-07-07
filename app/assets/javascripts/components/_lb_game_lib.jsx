@@ -53,6 +53,25 @@ var lbcontrollergamelib = {
     }
   },
 
+  battleship: {
+    render: function () {
+      gamemessage = null;
+      if (this.props.conf) {
+        if (this.props.conf.action == 'start' || this.props.conf.action == 'yousay') {
+          gamemessage = (
+            <div style={lbcontrollergamelib.gameMessageStyle}>
+              <h3><font color="white" style={{backgroundColor:'#8a6d3b',padding:5}}>Battleship</font></h3>
+              <h3 style={{margin:0}}>
+                You Say <font color="green">{this.props.conf.yousay}</font>
+              </h3>
+            </div>
+          )
+        }
+      }
+      return gamemessage;
+    }
+  },
+
   getGameControllerDisplay: function() {
     if (this.props.conf && this.props.conf.game) {
       var game = lbcontrollergamelib[this.props.conf.game];

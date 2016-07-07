@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   get 'tutor/world'
   get 'tutor/test'
   get 'tutor/ai'
+  get 'tutor/battleship'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
