@@ -1,5 +1,35 @@
 /* global AppDispatcher, React, ReactDOM */
 
+const EMPTY = 0;
+const OCCUPIED = 1;
+const BOMBED = 2;
+const HIT = 3;
+function testHit(battlefield,ox,oy,x,y) {
+  if (ox != x && oy != y) return EMPTY;
+  if (x < 0 || y < 0 || x > 7 || y > 7) return EMPTY;
+  var shipLen = 0;
+  if (battlefield[x][y] == OCCUPIED) {
+    battlefield[x][y] = HIT;
+    shipLen = 1 + testHit(battlefield,x,y,x+1,y) + testHit(battlefield,x,y,x-1,y)
+      + testHit(battlefield,x,y,x,y+1) + testHit(battlefield,x,y,x,y-1);
+  }
+  return shipLen;
+}
+
+function calcShips(p,arr) {
+  var sizes = [0,0,0,0,0,0,0,0];
+  for(i=0;i<8;i++) {
+    for(j=0;j<8;j++) {
+      var shipLen = testHit(arr,i,j,i,j);
+      if (shipLen > 0) {
+        if (typeof(sizes[shipLen]) === 'undefined') sizes[shipLen] = 0;
+        sizes[shipLen] ++;
+      }
+    }
+  }
+  p.userdata.sizes = sizes;
+}
+
 var LBTutorBattleship = React.createClass({
   getInitialState: function() {
     return {
@@ -34,7 +64,7 @@ var LBTutorBattleship = React.createClass({
     });
     socket.off('groupmembership').on('groupmembership', function (data) {
       if (!this.state.running) {
-        this.setState({players:data});
+        this.setState({players:mergePlayers(this.state.players,data)});
       }
     }.bind(this));
     socket.off('gamemove').on('gamemove', function (data) {
@@ -43,14 +73,15 @@ var LBTutorBattleship = React.createClass({
         if (p.id == data.socketid) {
           if (data.action == "setbattlefield") {
             p.userdata.battlefield = faceDataToArray(data.battlefield);
+            calcShips(p,faceDataToArray(data.battlefield))
           }
           if (data.action == "yousay") {
             if (this.state.running) {
 
-              // if (data.socketid !== this.state.userid) {
-              //   lbMsg("Stop it, " + p.userdata.username, "Not Your Turn");
-              //   return;
-              // }
+              if (data.socketid !== this.state.userid) {
+                lbMsg("Stop it, " + p.userdata.username, "Not Your Turn");
+                return;
+              }
 
               var row = data.yousay.substr(0,1).charCodeAt(0) - 'A'.charCodeAt(0);
               var col = data.yousay.substr(1,1).charCodeAt(0) - 'A'.charCodeAt(0);
@@ -65,22 +96,25 @@ var LBTutorBattleship = React.createClass({
               //
               //  Go Bomb
               //
+
               this.state.players.map(function(p){
                 if (p.id == this.state.userid) {
                   return;
                 }
-                console.log(p)
-                if (p.userdata.battlefield[row][col] >= 2) {
-                  bomblog += bomblog + p.userdata.username + " already bombed\n";
-                } else {
-                  bomblog += bomblog + p.userdata.username + " hit\n";
-                  bomblog += bomblog + p.userdata.username + " hit\n";
-                  bomblog += bomblog + p.userdata.username + " hit\n";
-                  p.userdata.battlefield[row][col] = 2;
+                var u = p.userdata;
+                if (u.battlefield[row][col] >= BOMBED) {
+                  bomblog += u.username + " already bombed :-/\n";
+                } else if (u.battlefield[row][col] == OCCUPIED) {
+                  var shipLen = testHit(u.battlefield,row,col,row,col);
+                  bomblog += u.username + " size " + shipLen +" is hit !!!!\n";
+                  u.battlefield[row][col] = BOMBED;
+                  calcShips(p,JSON.parse(JSON.stringify(u.battlefield)))
+                } else if (u.battlefield[row][col] == EMPTY){
+                  bomblog += u.username + " is missed :-)\n";
+                  u.battlefield[row][col] = BOMBED;
                 }
               }.bind(this))
-
-              lbMsg(this.state.players[this.state.player].userdata.username + " move " + row + ", " + col,bomblog);
+              lbMsg(this.state.players[this.state.player].userdata.username + " bombed " + row + ", " + col,bomblog);
 
               //
               //  Next Player
@@ -140,7 +174,10 @@ var LBTutorBattleship = React.createClass({
       var colno=0, rowno=0;
 
       if (typeof(player.userdata.battlefield) == 'undefined') {
-        player.userdata.battlefield = faceDataToArray("0000000000000000")
+        player.userdata.battlefield = faceDataToArray("0000000000000000");
+      }
+      if (typeof(player.userdata.sizes) == 'undefined') {
+        player.userdata.sizes=[];
       }
       var userStyle = {
         padding:5,
@@ -157,21 +194,12 @@ var LBTutorBattleship = React.createClass({
       }
 
       var aCol = function(col) {
-        var blockStyle = {
-          float:'left',
-          width:10,
-          height:10,
-          backgroundColor:'white',
-          border: '1px solid gray'
-        };
-        if (col == 1) {
-          blockStyle.backgroundColor = 'green'
-        }
-        if (col == 2) {
-          blockStyle.backgroundColor = 'red'
-        }
+        var blockStyle = {float:'left', width:15, height:15, backgroundColor:'white', border: '1px solid gray'};
+        if (col == 1) blockStyle.backgroundColor = 'white';
+        if (col == 2) blockStyle.backgroundColor = 'black';
+        if (col == 3) blockStyle.backgroundColor = 'red';
         return (
-          <span key={colno++} style={blockStyle} />
+          <span key={colno++} style={blockStyle}/>
         )
       };
       var aRow = function(row) {
@@ -182,12 +210,23 @@ var LBTutorBattleship = React.createClass({
           </div>
         )
       };
+      var currentSize=0;
+      var showSizes = function(size) {
+        currentSize++;
+        if (size == 0) return null;
+        return (
+          <div key={currentSize-1}>
+              Size {currentSize-1} : {size}
+          </div>
+          )
+      };
       return (
         <div key={player.id} style={userStyle} onClick={()=>this.selectUser(player)}>
           {player.userdata.username}
           <SmallFace id="{player.userdata.id}" face={player.userdata.avatar}/>
           <div style={{height:5}}>&nbsp;</div>
           {player.userdata.battlefield.map(aRow)}
+          {player.userdata.sizes.map(showSizes)}
         </div>
       )
     }.bind(this);

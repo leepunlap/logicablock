@@ -330,6 +330,20 @@ function lbHideGameDisplay() {
   $('#gamedisplay').modal('hide');
 }
 
+function mergePlayers(arr,inarr) {
+  var outarr = inarr;
+  for (i=0;i<arr.length;i++) {
+    for(j=0;j<outarr.length;j++) {
+      to_p = outarr[j];
+      from_p = arr[i];
+      if (to_p.id == from_p.id) {
+        to_p.userdata = from_p.userdata;
+      }
+    }
+  }
+  return outarr;
+}
+
 window.onerror = function myErrorHandler(errorMsg, url, lineNumber) {
   lbMsg("Error occured at line " + lineNumber + " : ", errorMsg);//or any message
   return false;

@@ -37,7 +37,7 @@ var LBTutorAIWebkit= React.createClass({
     });
     socket.off('groupmembership').on('groupmembership', function (data) {
       if (!this.state.running) {
-        this.setState({players:data});
+        this.setState({players:mergePlayers(this.state.players,data)});
       }
     }.bind(this));
     socket.off('gamemove').on('gamemove', function (data) {
