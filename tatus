@@ -1,0 +1,299 @@
+commit e03762a83eac1b50dac0e0e51925d389ea2db488
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Fri Jul 8 12:36:27 2016 +0800
+
+    Bombing code
+
+commit 7007c8d01d7bea147e02fea7b04aab0fc7b27b82
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Thu Jul 7 22:17:34 2016 +0800
+
+    Battleship
+
+commit 509b2840676dd7a397a47b05e918571770b7f56e
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Thu Jul 7 22:10:31 2016 +0800
+
+    Battleship
+
+commit c5ba2a994d8132c55fb82fdf9cb53a7374eb9b23
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Tue Jul 5 12:13:26 2016 +0800
+
+    bug fix - page unexpectedly reload on code load
+
+commit 8ca94093f5c040562b0602483daf2919c4c474d2
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Sat Jul 2 14:18:01 2016 +0800
+
+    Added back socketio gamedata message for AI
+
+commit 3d56e47e7ac8f6848010914c92efffd2a91f315f
+Author: Bernard Lee <bernard.p.lee@gmail.com>
+Date:   Fri Jul 1 20:32:53 2016 +0800
+
+    AI student code cleanup
+
+commit a733ad2ba44fdecd33c720548d79cb5543518b49
+Author: Bernard Lee <bernard.p.lee@gmail.com>
+Date:   Fri Jul 1 19:33:08 2016 +0800
+
+    Local speech and mic, Chinese voice synth
+
+commit 2ca61ad42e8ab8aceea99c82df392154f9935083
+Author: Bernard Lee <bernard.p.lee@gmail.com>
+Date:   Fri Jul 1 11:07:28 2016 +0800
+
+    remote https bug fix
+
+commit ad59b585a46980eb09ce35d077e4e8467c69c9b8
+Author: Bernard Lee <bernard.p.lee@gmail.com>
+Date:   Fri Jul 1 10:44:30 2016 +0800
+
+    https support for remote
+
+commit 438532bb7d645d5a61baebc546e0f3071cc43e2d
+Author: Bernard Lee <bernard.p.lee@gmail.com>
+Date:   Fri Jul 1 10:36:34 2016 +0800
+
+    https for remote
+
+commit 5688f3e696c76ab1704fc92888b3baffcc502995
+Author: Bernard Lee <bernard.p.lee@gmail.com>
+Date:   Fri Jul 1 10:27:48 2016 +0800
+
+    support https
+
+commit ff04f2f5d4afb9061a647f92e230479be55ae037
+Author: Bernard Lee <bernard.p.lee@gmail.com>
+Date:   Fri Jul 1 08:36:57 2016 +0800
+
+    roadlogica.cn unicorn config
+
+commit a867e259d23281c3af24c21830ee29e5a3142ad2
+Author: Bernard Lee <bernard.p.lee@gmail.com>
+Date:   Fri Jul 1 08:10:19 2016 +0800
+
+    Enabled speech
+
+commit 4db9a6a3fdd20fa620090be1d140bfe37e5c3a16
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Thu Jun 30 21:44:18 2016 +0800
+
+    AI
+
+commit c2eca678ed38c452976f0de4ec668f029aadf5f6
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Wed Jun 22 18:48:39 2016 +0800
+
+    3D World
+
+commit 3de18c293d6df9fe665d73ded793f088bfa655ee
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Tue Jun 21 14:56:49 2016 +0800
+
+    Editor improvements
+
+commit 239a4221d79d068ee2a8b91a00d25e110c3e3ed9
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Fri Jun 17 22:27:02 2016 +0800
+
+    Added gravity
+
+commit 7669108dbd2b7fa1ba645d500ce36beb04111af1
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Thu Jun 16 14:06:03 2016 +0800
+
+    BallGame
+
+commit 0ffc4dd087079b3187ad086bd1e5c9f72ef60f9f
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Fri Jun 10 11:12:49 2016 +0800
+
+    Bugs fix drums
+
+commit ba0baeb273f05bd8f15b28c3190e80bb7901e9c1
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Fri Jun 10 11:03:22 2016 +0800
+
+    Drums game first release
+
+commit 3829bace98696a8780d41d9f1633f3ec617283fe
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Sun Jun 5 10:34:36 2016 +0800
+
+    Added file load function, disabled fingerrace join after start, changed fingerrace to 4 buttons for easier game
+
+commit dda8a453761a80fd1bedde89e51d1764b5fa4cf1
+Author: Bernard Lee <bernard.p.lee@gmail.com>
+Date:   Fri Jun 3 21:44:17 2016 +0800
+
+    chmod 755 *.sh
+
+commit 69085bc186bd9ca814f389ba291e3c08842620d9
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Fri Jun 3 17:51:46 2016 +0800
+
+    Drums skeleton
+
+commit 2c5b34449d9ae66a9b92ec0e9f9a9e3c25bce7d4
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Fri Jun 3 16:29:13 2016 +0800
+
+    Finger Race game release
+
+commit c2981405bbc7e5024a439d48c5a8dcceb8aa197d
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Fri Jun 3 14:04:37 2016 +0800
+
+    Detached  controller game display
+
+commit efd78bd6e904492732a6968f34da2ea4742c1ce4
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Fri Jun 3 11:47:57 2016 +0800
+
+    Reorganize canvas code
+
+commit 36f7acf7be2ea316d0b8587476fe449372f77d1f
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Wed Jun 1 17:41:47 2016 +0800
+
+    Finger Race - user profile and socket.io supporitng code
+
+commit 1f48d741ba72f532755033a37c732fc3457ee929
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Sat May 21 13:25:07 2016 +0800
+
+    Disable sending on blank IP address
+
+commit 19e39e60cf59a44780ea8262edccc841fe9663d6
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Sat May 21 12:23:39 2016 +0800
+
+    Added unicorn start and stop scripts
+
+commit 22b1442c6b614f9b393da422e2499bc397769ae7
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Sat May 21 12:21:10 2016 +0800
+
+    Added unicorn config file
+
+commit e356cd836f457a26cfe4d1532fea68886735b665
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Sat May 21 10:47:54 2016 +0800
+
+    Add back bin dir
+
+commit 4c0387bbc43d3c67ca98a6be9d9bcf7a2b7686ca
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Sat May 21 10:30:13 2016 +0800
+
+    add .ruby-gemset and .ruby-version
+
+commit 9ccc7f55149e512b5d5beecb3745251e30f3765d
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Fri May 20 22:28:10 2016 +0800
+
+    Dual column toolbox, ip address config for 8x8
+
+commit 9d5948e4983fcd4d2027a203be9faf18b17a657f
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Sun May 15 08:49:54 2016 +0800
+
+    Persist project in browser storage
+
+commit 048c2f25f8b0e69004efd026cdb0b34f65a6e160
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Fri May 13 07:28:10 2016 +0800
+
+    Working remote function
+
+commit 981687c1e78bc7dda4d71c1f0a3b73433472eb02
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Thu May 12 11:31:22 2016 +0800
+
+    Perdoco logo and skin
+
+commit 3d57117b5f095908845adc852b2fc7f0b4952721
+Author: Bernard P. Lee <bernard.p.lee@gmail.com>
+Date:   Thu May 12 08:15:42 2016 +0800
+
+    Added favicon
+
+commit 4abc6f170153855b5fbf8ff0961f69ea8b2f1563
+Author: Bernard P. Lee <bernard.p.lee@gmail.com>
+Date:   Thu May 12 01:30:03 2016 +0800
+
+    Remote lbcontrol, qrcode and socketio basics
+
+commit c7d5c6ca6733e0419cd1acca9809cb3dcf52e8d4
+Author: Bernard P. Lee <bernard.p.lee@gmail.com>
+Date:   Wed May 11 14:49:13 2016 +0800
+
+    Renamed nodejs directory to avoid conflict
+
+commit 5b4c65d53ef982530a453dabb01caa4478485f27
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Tue May 10 20:08:28 2016 +0800
+
+    Added SocketIO Skeleton
+
+commit 62aff48ad73e0811ac6a2e13b77a270fe80e6867
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Tue May 10 09:42:24 2016 +0800
+
+    Added tzinfo for Rails on Windows
+
+commit 61d555688bf8115457b1071a4bf9627b5d016e04
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Tue May 10 09:39:50 2016 +0800
+
+    Stop tracking Gemfile.lock
+
+commit 1e472e452adf0300297f52f2658a16e6bfb4b186
+Author: bernardlee <blee@roadlogica.com>
+Date:   Wed Apr 27 15:49:36 2016 +0100
+
+    Added missing _lbcodelib.js
+
+commit 8a248c1d8fb4f84601f24da28423aa3f387a0616
+Author: bernardlee <blee@roadlogica.com>
+Date:   Wed Apr 27 15:27:50 2016 +0100
+
+    Test Class Snapshot
+
+commit 18603ddb87b421e75f3dd364195f7a998eb97634
+Author: bernardlee <blee@roadlogica.com>
+Date:   Thu Apr 21 05:24:24 2016 +0100
+
+    Added code editor and touch drag for connectors
+
+commit ca4e8f72a54f6193d1d8a82c8bc34aaec716c01f
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Fri Apr 8 09:31:41 2016 +0100
+
+    Added face editor
+
+commit 1e5144773388f6c24f8ad9b3d3c645ef3190892a
+Author: Bernard Lee <blee@roadlogica.com>
+Date:   Thu Apr 7 10:08:50 2016 +0100
+
+    sic connection line complete
+
+commit a89b745bdc683fb2178da7168b7df7ba10255797
+Author: roadlogica <blee@roadlogica.com>
+Date:   Wed Apr 6 07:21:58 2016 +0000
+
+    Separated drag source react component
+
+commit 00e283a4cde7bd92c9541fd7888fb73152c205c9
+Author: roadlogica <blee@roadlogica.com>
+Date:   Mon Apr 4 09:53:24 2016 +0000
+
+    Added basic connectors
+
+commit 184d3b3e624687e91547c25e6248cf0962efd7fd
+Author: roadlogica <blee@roadlogica.com>
+Date:   Fri Apr 1 14:08:47 2016 +0000
+
+    Initial Commit

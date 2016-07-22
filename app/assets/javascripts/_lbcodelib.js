@@ -344,6 +344,20 @@ function mergePlayers(arr,inarr) {
   return outarr;
 }
 
+function lbSendCode(code) {
+    if (typeof(code) !== 'function') {
+        lbMsg("lbSendCode","You send a function to your teacher with lbSendCode");
+        return;
+    }
+    var config = getConfig();
+    socket.emit('gamemove',{
+        action:'sendcode',
+        username:config.username,
+        group:config.group,
+        code:code.toString()
+    });
+}
+
 window.onerror = function myErrorHandler(errorMsg, url, lineNumber) {
   lbMsg("Error occured at line " + lineNumber + " : ", errorMsg);//or any message
   return false;

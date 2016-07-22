@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get 'tutor/test'
   get 'tutor/ai'
   get 'tutor/battleship'
+  get 'tutor/oscillators'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

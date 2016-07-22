@@ -1,0 +1,47 @@
+link href="/tutor/osc/build.css" rel="stylesheet"
+
+.row.fullheight
+  .col-md-3
+    = react_component 'LBTutorOscillators', {}
+  .col-md-9#oscpanel
+    #container
+      #caption style="display: block;"
+        .line
+          | oscillator.type =&nbsp;
+          span#type-value
+        .line
+          | oscillator.frequency.value =&nbsp;
+          span#freq-value
+
+script src="/tutor/osc/vendor.js"
+script src="/tutor/osc/lib.js"
+script src="/tutor/osc/main.js"
+
+javascript:
+
+  var useCharacter = function (c) {
+
+    if (c == 'square') {
+      var i = 0;
+    } else if (c == 'sawtooth') {
+      i = 1;
+    } else if (c == 'triangle') {
+      i = 2;
+    } else if (c == 'sine') {
+      i = 3;
+    } else {
+      lbMsg("useCharacter", "Character " + c + " not valid");
+      return;
+    }
+
+    activeCharacter.stop();
+    carousel.activeChildIndex = i;
+    activeCharacter = characters[i]
+    activeCharacter.stretch(0.4);
+    activeCharacter.start();
+    updateDom();
+    setTimeout(function () {
+      activeCharacter.stop();
+      updateDom();
+    }, 500)
+  }

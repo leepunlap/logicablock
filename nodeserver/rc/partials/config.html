@@ -1,0 +1,9 @@
+<h4>SSID:</h4>
+<input class="form-control" ng-model="ssid" />
+<h4>Password:</h4>
+<input class="form-control" ng-model="password" />
+<br><br>
+<button ng-click="onStart()" class="btn btn-default">Start Config</button>
+
+<div id="remoteDisplay" ng-show="sending" ng-class="{true: 'morse morse-on', false: 'morse morse-off'}[morseStatus]">
+</div>
