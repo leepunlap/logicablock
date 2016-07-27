@@ -59,6 +59,9 @@ var LBTutorFingerrace = React.createClass({
             if (typeof(p.percent) == 'undefined') {
               p.percent = 0;
             }
+            if (score < 0) {
+              score = 0;
+            }
             p.percent += score;
             if (p.percent >= 100) {
               p.percent = 100;
