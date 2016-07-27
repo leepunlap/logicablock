@@ -37,11 +37,23 @@ javascript:
     activeCharacter.stop();
     carousel.activeChildIndex = i;
     activeCharacter = characters[i]
-    activeCharacter.stretch(0.4);
-    activeCharacter.start();
     updateDom();
-    setTimeout(function () {
-      activeCharacter.stop();
-      updateDom();
-    }, 500)
+  };
+
+  var playSound = function(pitch,time) {
+    var char = activeCharacter;
+    char.stretch(pitch);
+    char.start();
+    updateDom();
+    if (time > 0) {
+      setTimeout(function () {
+        char.stop();
+        updateDom();
+      }, time)
+    }
+  }
+
+  var stopSound = function() {
+    activeCharacter.stop();
+    updateDom();
   }
